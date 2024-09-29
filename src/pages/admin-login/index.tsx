@@ -10,11 +10,15 @@ import { useNavigate } from "react-router-dom";
 import { ADMIN_REGISTRATION_LISTING_PATH } from "../../constants/paths";
 import { login } from "../../apis/auth";
 
-const Login: FC<{ session: boolean }> = ({ session = false }) => {
+const Login: FC<{ session: boolean; setSession: any }> = ({
+  session = false,
+  setSession = () => {},
+}) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   if (session) navigate(ADMIN_REGISTRATION_LISTING_PATH);
+
   return (
     <main className={styles.main}>
       <Formik
@@ -23,7 +27,7 @@ const Login: FC<{ session: boolean }> = ({ session = false }) => {
           try {
             setLoading(true);
             const authorized = await login(values?.email, values?.password);
-            authorized && navigate(ADMIN_REGISTRATION_LISTING_PATH);
+            setSession(authorized);
           } catch (err) {
             console.error(err);
           } finally {

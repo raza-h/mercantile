@@ -30,7 +30,7 @@ const Router = () => {
     <Routes>
       <Route
         path={ADMIN_LOGIN_PATH}
-        element={<AdminLogin session={session} />}
+        element={<AdminLogin session={session} setSession={setSession} />}
       />
       <Route
         path={NOT_FOUND_PATH}
