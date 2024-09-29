@@ -3,6 +3,14 @@ import react from '@vitejs/plugin-react';
 import vitePluginImp from 'vite-plugin-imp';
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      external: [
+        'antd/es/layout/style/index.scss',
+        './src/styles/antd.theme.scss',
+      ]
+    }
+  },
   plugins: [
     react(),
     vitePluginImp({
