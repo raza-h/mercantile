@@ -98,14 +98,16 @@ const RegistrationListing = () => {
           ...(countLoading ? { display: "none" } : {}),
         }}
       >
-        <Pagination
-          total={total}
-          current={currentPage}
-          pageSize={PAGE_SIZE}
-          onChange={(page) => {
-            navigate({ search: `?page=${page}` });
-          }}
-        />
+        {total > PAGE_SIZE && (
+          <Pagination
+            total={total}
+            current={currentPage}
+            pageSize={PAGE_SIZE}
+            onChange={(page) => {
+              navigate({ search: `?page=${page}` });
+            }}
+          />
+        )}
       </Flex>
     </main>
   );
