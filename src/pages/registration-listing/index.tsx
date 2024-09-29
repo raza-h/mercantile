@@ -49,33 +49,36 @@ const RegistrationListing = () => {
   }, [location.search]);
 
   const getDataSource = () => {
-    return registrations?.map((registration) => ({
-      [strings.user]: (
-        <article>
-          <p className={styles.bold}>{registration?.name}</p>
-          <Flex gap={2} vertical>
-            <Flex gap={5} align="center">
-              <small className={styles.bold}>Email</small>
-              <small>{registration?.email}</small>
+    return registrations?.map(
+      ({ name, email, city, storage, color, interests, model, phone, id }) => ({
+        key: id,
+        [strings.user]: (
+          <article>
+            <p className={styles.bold}>{name}</p>
+            <Flex gap={2} vertical>
+              <Flex gap={5} align="center">
+                <small className={styles.bold}>Email</small>
+                <small>{email}</small>
+              </Flex>
+              <Flex gap={5} align="center">
+                <small className={styles.bold}>Phone</small>
+                <small>{`0${phone}`}</small>
+              </Flex>
             </Flex>
-            <Flex gap={5} align="center">
-              <small className={styles.bold}>Phone</small>
-              <small>{`0${registration?.phone}`}</small>
-            </Flex>
-          </Flex>
-        </article>
-      ),
-      [strings.city]: <p>{registration?.city}</p>,
-      [strings.variant]: (
-        <article>
-          <p>
-            {registration?.model} - {registration?.storage}
-          </p>
-          <small className={styles.bold}>{registration?.color}</small>
-        </article>
-      ),
-      [strings.interests]: <p>{registration?.interests || "None"}</p>,
-    }));
+          </article>
+        ),
+        [strings.city]: <p>{city}</p>,
+        [strings.variant]: (
+          <article>
+            <p>
+              {model} - {storage}
+            </p>
+            <small className={styles.bold}>{color}</small>
+          </article>
+        ),
+        [strings.interests]: <p>{interests || "None"}</p>,
+      })
+    );
   };
 
   return (

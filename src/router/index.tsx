@@ -13,20 +13,41 @@ import RegistrationListing from "../pages/registration-listing";
 import AdminLogin from "../pages/admin-login";
 import { useEffect, useState } from "react";
 import { getSession } from "../apis/auth";
+import { Spin } from "antd";
 
 const Router = () => {
   const [session, setSession] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSession = async () => {
-      const session = await getSession();
-      setSession(session);
+      setLoading(true);
+      try {
+        const session = await getSession();
+        setSession(session);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchSession();
   }, []);
 
-  return (
+  return loading ? (
+    <main
+      style={{
+        width: "100%",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Spin size="large" />
+    </main>
+  ) : (
     <Routes>
       <Route
         path={ADMIN_LOGIN_PATH}

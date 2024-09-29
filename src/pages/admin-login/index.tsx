@@ -3,12 +3,12 @@ import Card from "../../common/card";
 import styles from "./index.module.scss";
 import Input from "../../common/input";
 import { Button } from "antd";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import * as yup from "yup";
 import strings from "../../constants/strings";
-import { useNavigate } from "react-router-dom";
 import { ADMIN_REGISTRATION_LISTING_PATH } from "../../constants/paths";
 import { login } from "../../apis/auth";
+import { useNavigate } from "react-router-dom";
 
 const Login: FC<{ session: boolean; setSession: any }> = ({
   session = false,
@@ -17,7 +17,9 @@ const Login: FC<{ session: boolean; setSession: any }> = ({
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  if (session) navigate(ADMIN_REGISTRATION_LISTING_PATH);
+  useEffect(() => {
+    session && navigate(ADMIN_REGISTRATION_LISTING_PATH);
+  }, [session]);
 
   return (
     <main className={styles.main}>
