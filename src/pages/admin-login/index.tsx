@@ -23,7 +23,6 @@ const Login: FC<{ session: boolean }> = ({ session = false }) => {
           try {
             setLoading(true);
             const authorized = await login(values?.email, values?.password);
-            console.log(authorized);
             authorized && navigate(ADMIN_REGISTRATION_LISTING_PATH);
           } catch (err) {
             console.error(err);

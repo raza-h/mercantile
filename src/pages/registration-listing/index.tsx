@@ -37,7 +37,6 @@ const RegistrationListing = () => {
       try {
         setLoading(true);
         const data = await getRegistrations(currentPage);
-        console.log(data);
         setRegistrations(data);
       } catch (err) {
         console.error(err);
