@@ -1,0 +1,19 @@
+@import '../../styles/antd.theme.scss';
+
+.header {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    background: $primary-color;
+    position: fixed !important;
+    width: 100%;
+
+    .divider {
+        border-color: #ededed;
+        height: 80%;
+    }  
+
+    z-index: 10000;
+}

@@ -1,0 +1,30 @@
+@import '../../styles/antd.theme.scss';
+
+.label {
+    display: block;
+}
+
+.input {
+    padding: 0.32rem 0.75rem;
+}
+
+.inputBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.errorBorder {
+    border: 0.25px solid $error-color;
+}
+
+.input::after
+{
+    position: absolute;
+    left: 4px;
+    top: 5px;
+    content: attr(data-placeholder);
+    pointer-events: none;
+    opacity: 0.5;
+    z-index: 1;
+}

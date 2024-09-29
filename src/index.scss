@@ -1,0 +1,7 @@
+@import './styles/antd.theme.scss';
+
+.root {
+  min-height: 100vh;
+  background: $body-background;
+  color: $primary-color;
+}

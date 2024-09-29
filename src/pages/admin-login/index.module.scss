@@ -1,0 +1,25 @@
+.main {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.form {
+    width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+    .card {
+        width: 40%;
+    }
+}

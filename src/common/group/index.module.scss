@@ -1,0 +1,26 @@
+.group {
+    display: grid;
+    gap: 1.5rem 5rem;
+}
+
+.cols_1.cols_2.cols_3.cols_4 {
+    grid-template-columns: repeat(1, 1fr);
+}
+
+@media only screen and (min-width: 768px) {
+    .cols_2 {    
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media only screen and (min-width: 1280px) {
+    .cols_3 {    
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media only screen and (min-width: 1920px) {
+    .cols_4 {    
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

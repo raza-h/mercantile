@@ -1,0 +1,12 @@
+@import '../../styles/antd.theme.scss';
+
+.main {
+    width: 100%;
+    min-height: 85vh;
+    background-color: $body-background;
+    padding: 2rem;
+}
+
+.bold {
+    font-weight: 600;
+}

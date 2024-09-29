@@ -1,0 +1,21 @@
+@import '../../styles/antd.theme.scss';
+
+.label {
+    display: block;
+}
+
+.input {
+    height: 2.1rem;
+    width: 100%;
+}
+
+.inputBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.errorBorder {
+    border: 0.25px solid $error-color;
+    border-radius: 7px;
+}
