@@ -84,8 +84,8 @@ const Router = () => {
           path={ADMIN_REGISTRATION_LISTING_PATH}
           element={<RegistrationListing />}
         />
-        <Route path="*" element={<Navigate to={NOT_FOUND_PATH} />} />
       </Route>
+      <Route path="*" element={<Navigate to={NOT_FOUND_PATH} />} />
     </Routes>
   );
 };
