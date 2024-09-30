@@ -4,6 +4,7 @@ import Group from "../../common/group";
 import styles from "./index.module.scss";
 import { Divider, Flex } from "antd";
 import Card from "../../common/card";
+import { COLOR_HEX } from "../../constants/generic";
 
 const Summary: FC<{
   title?: string;
@@ -47,10 +48,7 @@ const Summary: FC<{
           <Flex gap={8}>
             <p
               style={{
-                background:
-                  values?.color === "Ultramarine"
-                    ? "#3F00FF"
-                    : color?.toLowerCase(),
+                background: COLOR_HEX[color],
                 width: "1rem",
                 height: "1rem",
                 borderRadius: "5px",

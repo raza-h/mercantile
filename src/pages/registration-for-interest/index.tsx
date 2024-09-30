@@ -4,8 +4,8 @@ import { iphone16 } from "../../assets";
 import styles from "./index.module.scss";
 import { Formik } from "formik";
 import {
-  colors,
   formatOptions,
+  getDynamicColorOptions,
   getDynamicStorageOptions,
   interestedOptions,
   models,
@@ -22,6 +22,7 @@ import Summary from "../../components/summary";
 import { registerForInterest } from "../../apis/registrations";
 import Card from "../../common/card";
 import ProgressButtons from "./progress-buttons";
+import { COLOR_HEX } from "../../constants/generic";
 
 const RegistrationForInterest: FC<{}> = () => {
   const [step, setStep] = useState(1);
@@ -149,43 +150,43 @@ const RegistrationForInterest: FC<{}> = () => {
                 justify="space-around"
                 style={{ flexWrap: "wrap", marginTop: "3rem" }}
               >
-                {colors.map((color) => {
-                  const checked = values?.color === color;
-                  return (
-                    <Tag.CheckableTag
-                      key={color}
-                      className={cx(
-                        styles.customTag,
-                        checked ? styles.selectedTag : ""
-                      )}
-                      style={{ background: "white" }}
-                      checked={checked}
-                      onChange={() => {
-                        setFieldValue("color", color);
-                      }}
-                    >
-                      <figure className={styles.figure}>
-                        <div
-                          className={styles.colorContainer}
-                          style={{
-                            borderColor: checked ? "#0046b5" : "#d9d9d9",
+                {values?.model &&
+                  getDynamicColorOptions(values?.model).map(
+                    ({ label, value }) => {
+                      const checked = values?.color === value;
+                      return (
+                        <Tag.CheckableTag
+                          key={value}
+                          className={cx(
+                            styles.customTag,
+                            checked ? styles.selectedTag : ""
+                          )}
+                          style={{ background: "white" }}
+                          checked={checked}
+                          onChange={() => {
+                            setFieldValue("color", value);
                           }}
                         >
-                          <div
-                            className={styles.palette}
-                            style={{
-                              background:
-                                color !== "Ultramarine"
-                                  ? color.toLowerCase()
-                                  : "#3F00FF",
-                            }}
-                          />
-                        </div>
-                        <p>{color}</p>
-                      </figure>
-                    </Tag.CheckableTag>
-                  );
-                })}
+                          <figure className={styles.figure}>
+                            <div
+                              className={styles.colorContainer}
+                              style={{
+                                borderColor: checked ? "#0046b5" : "#d9d9d9",
+                              }}
+                            >
+                              <div
+                                className={styles.palette}
+                                style={{
+                                  background: COLOR_HEX[value],
+                                }}
+                              />
+                            </div>
+                            <p>{label}</p>
+                          </figure>
+                        </Tag.CheckableTag>
+                      );
+                    }
+                  )}
               </Flex>
               <ErrorMessage
                 name="color"

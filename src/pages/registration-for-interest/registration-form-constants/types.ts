@@ -1,4 +1,4 @@
-type registrationForm = {
+export type registrationForm = {
     name ?: string,
     email ?: string,
     phone ?: string,
@@ -9,4 +9,12 @@ type registrationForm = {
     interests ?: Array<string>
 }
 
-export default registrationForm;
+export type dynamicOption = {
+    label: string,
+    show: boolean,
+}
+
+export type selectOption = {
+    label: string,
+    value: string,
+}
