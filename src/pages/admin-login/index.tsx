@@ -9,7 +9,7 @@ import strings from "../../constants/strings";
 import { ADMIN_REGISTRATION_LISTING_PATH } from "../../constants/paths";
 import { login } from "../../apis/auth";
 import { useNavigate } from "react-router-dom";
-import { showErrorToast, showSuccessToast } from "../../utils.js/common";
+import { showErrorToast } from "../../utils.js/common";
 
 const Login: FC<{ session: boolean; setSession: any }> = ({
   session = false,
@@ -31,7 +31,6 @@ const Login: FC<{ session: boolean; setSession: any }> = ({
             setLoading(true);
             const authorized = await login(values?.email, values?.password);
             setSession(authorized);
-            showSuccessToast({ message: "Log in successful" });
           } catch (error: any) {
             showErrorToast({ action: "log in", error });
           } finally {
