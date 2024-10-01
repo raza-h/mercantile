@@ -15,7 +15,9 @@ const ProtectedRoute: FC<{ session?: boolean; setSession?: any }> = ({
   return session ? (
     <>
       <InternalWrapper>
-        <Flex style={{ height: 0, position: "relative", padding: "0 2rem" }}>
+        <Flex
+          style={{ height: 0, position: "relative", padding: "0.25rem 2rem" }}
+        >
           <Button
             danger
             style={{ marginLeft: "auto" }}
