@@ -76,7 +76,10 @@ const Router = () => {
       >
         <Route path={BASE_PATH} element={<RegistrationForInterest />} />
       </Route>
-      <Route path={ADMIN_PATH} element={<ProtectedRoute session={session} />}>
+      <Route
+        path={ADMIN_PATH}
+        element={<ProtectedRoute session={session} setSession={setSession} />}
+      >
         <Route
           index
           element={<Navigate to={ADMIN_REGISTRATION_LISTING_PATH} />}
