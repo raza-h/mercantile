@@ -232,7 +232,9 @@ const RegistrationForInterest: FC<{}> = () => {
           )}
           {step === 3 && (
             <h3 style={{ textAlign: "center" }}>
-              Thank You for showing interest!
+              Thank You for showing your interest. Your order has been received.
+              <br />
+              Our representative will be in contact with you shortly.
             </h3>
           )}
         </form>
