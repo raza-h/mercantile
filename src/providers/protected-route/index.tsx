@@ -24,8 +24,8 @@ const ProtectedRoute: FC<{ session?: boolean; setSession?: any }> = ({
             onClick={async () => {
               try {
                 setLoading(true);
-                await logout();
-                setSession(false);
+                const success = await logout();
+                setSession(!success);
               } catch (error: any) {
                 showErrorToast({ action: "log out", error });
               } finally {
