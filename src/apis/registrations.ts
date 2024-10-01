@@ -2,7 +2,7 @@ import supabase from "../auth";
 import { PAGE_SIZE } from "../constants/generic";
 import { showErrorToast } from "../utils.js/common";
 
-const table = "sorted_registrations";
+const table = "registrations";
 
 export const registerForInterest = async (payload: Object) => {
   try {
@@ -31,7 +31,7 @@ export const getRegistrations = async (page: number = 1) => {
   const from = PAGE_SIZE * (page - 1);
   const to = from + PAGE_SIZE - 1;
   try {
-    const { data, error } = await supabase.from(table).select("*").range(from, to);
+    const { data, error } = await supabase.from(table).select("*").range(from, to).order('created_at', { ascending: false });
     if (error) throw error;
     return data;
   } catch (error: any) {
