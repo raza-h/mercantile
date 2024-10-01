@@ -23,6 +23,7 @@ import { registerForInterest } from "../../apis/registrations";
 import Card from "../../common/card";
 import ProgressButtons from "./progress-buttons";
 import { COLOR_HEX } from "../../constants/generic";
+import { showErrorToast } from "../../utils.js/common";
 
 const RegistrationForInterest: FC<{}> = () => {
   const [step, setStep] = useState(1);
@@ -36,8 +37,8 @@ const RegistrationForInterest: FC<{}> = () => {
         setInitialLoading(true);
         const cities = await getCities();
         setCities(cities);
-      } catch (err) {
-        console.error(err);
+      } catch (error: any) {
+        showErrorToast({ action: "fetching cities", error });
       } finally {
         setInitialLoading(false);
       }
@@ -59,8 +60,8 @@ const RegistrationForInterest: FC<{}> = () => {
               interests: values?.interests?.join(", "),
             });
             setStep(3);
-          } catch (err) {
-            console.error(err);
+          } catch (error: any) {
+            showErrorToast({ action: "registering your interest", error });
           } finally {
             setLoading(false);
           }

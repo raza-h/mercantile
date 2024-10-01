@@ -6,6 +6,7 @@ import strings from "../../constants/strings";
 import { columns } from "./registration-listing-constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PAGE_SIZE } from "../../constants/generic";
+import { showErrorToast } from "../../utils.js/common";
 
 const RegistrationListing = () => {
   const [registrations, setRegistrations] = useState<any[]>([]);
@@ -23,8 +24,11 @@ const RegistrationListing = () => {
       try {
         const count = await fetchTotalCount();
         setTotal(count ?? 0);
-      } catch (err) {
-        console.error(err);
+      } catch (error: any) {
+        showErrorToast({
+          action: "fetching some details about the registrations",
+          error,
+        });
       } finally {
         setCountLoading(false);
       }
@@ -38,8 +42,8 @@ const RegistrationListing = () => {
         setLoading(true);
         const data = await getRegistrations(currentPage);
         setRegistrations(data);
-      } catch (err) {
-        console.error(err);
+      } catch (error: any) {
+        showErrorToast({ action: "fetching registrations", error });
       } finally {
         setLoading(false);
       }
