@@ -1,4 +1,5 @@
 import supabase from "../auth";
+import { showErrorToast } from "../utils.js/common";
 
 export const login = async (email: string, password: string) => {
   try {
@@ -8,8 +9,8 @@ export const login = async (email: string, password: string) => {
     });
     if (error) throw error;
     return !!data?.user;
-  } catch (err) {
-    console.error(err);
+  } catch (error: any) {
+    showErrorToast({action: 'log in', error});
     return false;
   }
 };
@@ -19,8 +20,8 @@ export const getSession = async () => {
     const { data, error } = await supabase.auth.getSession();
     if (error) throw error;
     return !!data.session;
-  } catch (err) {
-    console.error(err);
+  } catch (error: any) {
+    showErrorToast({action: 'authentication', error});
     return false;
   }
 };

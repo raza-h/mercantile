@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { showErrorToast } from '../utils.js/common';
 
 export const getCities = async (params: string = '') => {
     try {
@@ -6,7 +7,7 @@ export const getCities = async (params: string = '') => {
         if (response?.data.success === true) {
             return response.data.data;
         }
-    } catch(err) {
-        console.error('Error fetching cities');
+    } catch(error: any) {
+        showErrorToast({action: 'fetching cities', error});
     }
 }
