@@ -26,3 +26,14 @@ export const getSession = async () => {
     return false;
   }
 };
+
+export const logout = async () => {
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    return true;
+  } catch (error: any) {
+    showErrorToast({action: 'log out', error});
+    return false;
+  }
+};
