@@ -31,7 +31,6 @@ const Login: FC<{ session: boolean; setSession: any }> = ({
             setLoading(true);
             const authorized = await login(values?.email, values?.password);
             setSession(authorized);
-            showSuccessToast({ message: "Log in successful" });
           } catch (error: any) {
             showErrorToast({ action: "log in", error });
           } finally {

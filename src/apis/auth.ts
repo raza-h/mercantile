@@ -1,5 +1,5 @@
 import supabase from "../auth";
-import { showErrorToast } from "../utils.js/common";
+import { showErrorToast, showSuccessToast } from "../utils.js/common";
 
 export const login = async (email: string, password: string) => {
   try {
@@ -8,6 +8,7 @@ export const login = async (email: string, password: string) => {
       password,
     });
     if (error) throw error;
+    !!data?.user && showSuccessToast({ message: "Log in successful" });
     return !!data?.user;
   } catch (error: any) {
     showErrorToast({action: 'log in', error});
