@@ -46,7 +46,13 @@ const Login: FC<{ session: boolean; setSession: any }> = ({
         })}
       >
         {({ values, setFieldValue, errors, touched, handleSubmit }) => (
-          <form className={styles.form}>
+          <form
+            className={styles.form}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
             <Card title={<center>Admin Login</center>} className={styles.card}>
               <Input
                 value={values?.email}
@@ -68,11 +74,7 @@ const Login: FC<{ session: boolean; setSession: any }> = ({
                   touched?.password && errors?.password && errors?.password
                 }
               />
-              <Button
-                type="primary"
-                loading={loading}
-                onClick={() => handleSubmit()}
-              >
+              <Button htmlType="submit" type="primary" loading={loading}>
                 Login
               </Button>
             </Card>
