@@ -26,7 +26,7 @@ import { COLOR_HEX } from "../../constants/generic";
 import { showErrorToast } from "../../utils.js/common";
 
 const RegistrationForInterest: FC<{}> = () => {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(false);
