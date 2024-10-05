@@ -1,4 +1,4 @@
-import { Checkbox, Col, Divider, Flex, Image, Row, Tag } from "antd";
+import { Checkbox, Col, Divider, Flex, Image, Tag } from "antd";
 import { FC, useEffect, useState } from "react";
 import { iphone16 } from "../../assets";
 import styles from "./index.module.scss";
