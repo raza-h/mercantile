@@ -3,7 +3,7 @@
     gap: 1.5rem 5rem;
 }
 
-.cols_1.cols_2.cols_3.cols_4 {
+.cols_1,.cols_2,.cols_3,.cols_4 {
     grid-template-columns: repeat(1, 1fr);
 }
 
