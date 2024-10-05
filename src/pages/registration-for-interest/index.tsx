@@ -203,14 +203,31 @@ const RegistrationForInterest: FC<{}> = () => {
                   setFieldValue("interests", value);
                 }}
                 style={{ width: "100%", marginTop: "1rem" }}
+                value={values?.interests}
               >
-                <Row className={styles.checkRow}>
+                <Group cols={2} className={styles.checkRow}>
                   {interestedOptions?.map((option) => (
-                    <Col className={styles.checkContainer} key={option}>
-                      <Checkbox value={option}>{option}</Checkbox>
+                    <Col
+                      className={styles.checkContainer}
+                      key={option}
+                      onClick={() => {
+                        setFieldValue(
+                          "interests",
+                          values?.interests?.includes(option)
+                            ? values.interests.filter((item) => item !== option)
+                            : [...values?.interests!, option]
+                        );
+                      }}
+                    >
+                      <Checkbox
+                        value={option}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {option}
+                      </Checkbox>
                     </Col>
                   ))}
-                </Row>
+                </Group>
               </Checkbox.Group>
               <ProgressButtons
                 step={step}
