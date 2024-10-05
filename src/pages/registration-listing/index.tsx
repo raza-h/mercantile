@@ -7,6 +7,9 @@ import { columns } from "./registration-listing-constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PAGE_SIZE } from "../../constants/generic";
 import { showErrorToast } from "../../utils.js/common";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+dayjs.extend(advancedFormat);
 
 const RegistrationListing = () => {
   const [registrations, setRegistrations] = useState<any[]>([]);
@@ -54,7 +57,18 @@ const RegistrationListing = () => {
 
   const getDataSource = () => {
     return registrations?.map(
-      ({ name, email, city, storage, color, interests, model, phone, id }) => ({
+      ({
+        created_at,
+        name,
+        email,
+        city,
+        storage,
+        color,
+        interests,
+        model,
+        phone,
+        id,
+      }) => ({
         key: id,
         [strings.user]: (
           <article>
@@ -69,6 +83,9 @@ const RegistrationListing = () => {
                 <small>{`0${phone}`}</small>
               </Flex>
             </Flex>
+            <small className={styles.bold} style={{ fontSize: "0.8em" }}>
+              {dayjs(created_at).format("Do MMMM, YYYY") || created_at}
+            </small>
           </article>
         ),
         [strings.city]: <p>{city}</p>,
