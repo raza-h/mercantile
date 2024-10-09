@@ -1,6 +1,7 @@
+import { column } from "../../../common/table/constants/types";
 import strings from "../../../constants/strings";
 
-export const columns: {title: string, dataIndex: string, key: string}[] = [
+export const columns: column[] = [
     {
       title: strings.user,
       dataIndex: strings.user,

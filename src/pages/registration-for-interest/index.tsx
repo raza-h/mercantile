@@ -23,7 +23,7 @@ import { registerForInterest } from "../../apis/registrations";
 import Card from "../../common/card";
 import ProgressButtons from "./progress-buttons";
 import { COLOR_HEX } from "../../constants/generic";
-import { showErrorToast } from "../../utils.js/common";
+import { showErrorToast } from "../../utils/common";
 
 const RegistrationForInterest: FC<{}> = () => {
   const [step, setStep] = useState(1);

@@ -1,5 +1,5 @@
 import supabase from "../auth";
-import { showErrorToast, showSuccessToast } from "../utils.js/common";
+import { showErrorToast, showSuccessToast } from "../utils/common";
 
 export const login = async (email: string, password: string) => {
   try {
