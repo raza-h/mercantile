@@ -14,7 +14,7 @@ import AdminLogin from "../pages/admin-login";
 import { useEffect, useState } from "react";
 import { getSession } from "../apis/auth";
 import { Spin } from "antd";
-import { showErrorToast } from "../utils.js/common";
+import { showErrorToast } from "../utils/common";
 
 const Router = () => {
   const [session, setSession] = useState(false);

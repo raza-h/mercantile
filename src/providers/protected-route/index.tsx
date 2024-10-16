@@ -3,7 +3,7 @@ import { ADMIN_LOGIN_PATH } from "../../constants/paths";
 import { FC, useState } from "react";
 import InternalWrapper from "../internal-wrapper";
 import { Button, Flex } from "antd";
-import { showErrorToast } from "../../utils.js/common";
+import { showErrorToast } from "../../utils/common";
 import { logout } from "../../apis/auth";
 
 const ProtectedRoute: FC<{ session?: boolean; setSession?: any }> = ({

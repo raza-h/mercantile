@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { showErrorToast } from '../utils.js/common';
+import { showErrorToast } from '../utils/common';
 
 export const getCities = async (params: string = '') => {
     try {

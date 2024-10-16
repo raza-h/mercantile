@@ -1,6 +1,6 @@
 import supabase from "../auth";
 import { PAGE_SIZE } from "../constants/generic";
-import { showErrorToast } from "../utils.js/common";
+import { showErrorToast } from "../utils/common";
 
 const table = "registrations";
 
