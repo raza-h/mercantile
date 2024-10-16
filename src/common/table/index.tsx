@@ -38,6 +38,7 @@ const Table: FC<{
               current: currentPage,
               pageSize: PAGE_SIZE,
               onChange: handlePageChange,
+              showSizeChanger: false,
             }
           : false
       }

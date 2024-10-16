@@ -197,12 +197,7 @@ const RegistrationListing = () => {
         loading={loading || countLoading}
         scroll={{
           x: 1200,
-          y:
-            registrations?.length > 3
-              ? window.innerHeight < 800
-                ? 400
-                : 800
-              : undefined,
+          y: registrations?.length > 3 && window.innerHeight < 800 ? 400 : 800,
         }}
         rows={total}
         currentPage={current}
