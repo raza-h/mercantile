@@ -4,4 +4,6 @@ export default {
     city: 'City',
     variant: 'Variant',
     interests: 'Interests',
+    status: 'Status',
+    actions: 'Actions',
 }

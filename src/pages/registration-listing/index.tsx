@@ -1,14 +1,16 @@
-import { Flex } from "antd";
+import { Flex, Modal, Tag } from "antd";
 import styles from "./index.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchTotalCount, getRegistrations } from "../../apis/registrations";
 import strings from "../../constants/strings";
-import { columns } from "./registration-listing-constants";
+import { columns, statusObjects } from "./registration-listing-constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { showErrorToast } from "../../utils/common";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import Table from "../../common/table";
+import { EditOutlined } from "@ant-design/icons";
+import StatusForm from "./status-form";
 dayjs.extend(advancedFormat);
 
 const RegistrationListing = () => {
@@ -16,6 +18,11 @@ const RegistrationListing = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [countLoading, setCountLoading] = useState(false);
+  const [statusChangeLoading, setStatusChangeLoading] = useState(false);
+  const [statusModalRegistration, setStatusModalRegistration] = useState<{
+    [key: string]: any;
+  } | null>(null);
+  const formRef = useRef<any>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const current = Number(new URLSearchParams(location.search).get("page")) || 1;
@@ -71,6 +78,7 @@ const RegistrationListing = () => {
       model,
       phone,
       id,
+      status,
     }) => ({
       key: id,
       [strings.user]: (
@@ -91,6 +99,20 @@ const RegistrationListing = () => {
           </small>
         </article>
       ),
+      [strings.status]: (
+        <Tag
+          color={statusObjects[status]?.bg}
+          style={{
+            color: statusObjects[status].color,
+            padding: "0.5rem 1.5rem",
+            borderRadius: 20,
+            fontSize: 12,
+            fontWeight: 600,
+          }}
+        >
+          {statusObjects[status]?.label}
+        </Tag>
+      ),
       [strings.city]: <p>{city}</p>,
       [strings.variant]: (
         <article>
@@ -101,18 +123,80 @@ const RegistrationListing = () => {
         </article>
       ),
       [strings.interests]: <p>{interests || "None"}</p>,
+      [strings.actions]: (
+        <Flex
+          gap={8}
+          align="center"
+          style={{ cursor: "pointer" }}
+          onClick={() =>
+            setStatusModalRegistration({
+              created_at,
+              name,
+              email,
+              city,
+              storage,
+              color,
+              interests,
+              model,
+              phone,
+              id,
+              status,
+            })
+          }
+        >
+          <EditOutlined style={{ marginBottom: 10, color: "#0046b5" }} />
+          <p
+            style={{
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "#0046b5",
+            }}
+          >
+            Update Status
+          </p>
+        </Flex>
+      ),
     })
   );
 
   return (
     <main className={styles.main}>
+      <Modal
+        title={`Change Status for ${statusModalRegistration?.name}`}
+        open={!!statusModalRegistration}
+        onClose={() => {
+          setStatusModalRegistration(null);
+          setStatusChangeLoading(false);
+        }}
+        onCancel={() => {
+          setStatusModalRegistration(null);
+          setStatusChangeLoading(false);
+        }}
+        onOk={async () => {
+          formRef.current.submit();
+        }}
+        okButtonProps={{ loading: statusChangeLoading }}
+        destroyOnClose
+      >
+        <StatusForm
+          registration={statusModalRegistration}
+          registrations={registrations}
+          updateRegistrations={setRegistrations}
+          setLoading={setStatusChangeLoading}
+          closeModal={() => {
+            setStatusModalRegistration(null);
+            setStatusChangeLoading(false);
+          }}
+          ref={formRef}
+        />
+      </Modal>
       <h2>Registration Listing</h2>
       <Table
         columns={columns}
         dataSource={dataSource}
         loading={loading || countLoading}
         scroll={{
-          x: 800,
+          x: 1200,
           y:
             registrations?.length > 3
               ? window.innerHeight < 800

@@ -57,6 +57,7 @@ const RegistrationForInterest: FC<{}> = () => {
             setLoading(true);
             await registerForInterest({
               ...values,
+              status: "pending",
               interests: values?.interests?.join(", "),
             });
             setStep(3);
