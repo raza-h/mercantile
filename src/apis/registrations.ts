@@ -1,6 +1,6 @@
 import supabase from "../auth";
 import { PAGE_SIZE } from "../constants/generic";
-import { showErrorToast } from "../utils/common";
+import { showErrorToast, showSuccessToast } from "../utils/common";
 
 const table = "registrations";
 
@@ -37,5 +37,35 @@ export const getRegistrations = async (page: number = 1) => {
   } catch (error: any) {
     showErrorToast({action: 'fetching registrations', error});
     return [];
+  }
+};
+
+export const getRegistrationStatus = async (id: string | number) => {
+  try {
+    const { data, error } = await supabase.from(table).select("*").eq("id", id);
+    if (error) throw error;
+    return data?.length ? data[0]?.status : undefined;
+  } catch (error: any) {
+    showErrorToast({action: 'fetching registrations', error});
+    return undefined;
+  }
+}
+
+export const updateRegistrationStatus = async (id: string | number, payload: { [key: string]: any }) => {
+  try {
+    const { error } = await supabase
+    .from(table)
+    .update(payload) 
+    .eq('id', id);
+
+    if (error) {
+      throw error;
+    } else {
+      showSuccessToast({ message: "Status updated successfully" });
+      return true;
+    }
+  } catch(error: any) {
+    showErrorToast({action: 'updating registration status', error});
+    return false;
   }
 };
