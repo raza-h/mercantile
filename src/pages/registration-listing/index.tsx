@@ -7,10 +7,11 @@ import { columns, statusObjects } from "./registration-listing-constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { showErrorToast } from "../../utils/common";
 import dayjs from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
 import Table from "../../common/table";
 import { EditOutlined } from "@ant-design/icons";
 import StatusForm from "./status-form";
+import { Popover } from "../../common";
+import advancedFormat from "dayjs/plugin/advancedFormat";
 dayjs.extend(advancedFormat);
 
 const RegistrationListing = () => {
@@ -79,6 +80,7 @@ const RegistrationListing = () => {
       phone,
       id,
       status,
+      updated_at,
     }) => ({
       key: id,
       [strings.user]: (
@@ -100,18 +102,35 @@ const RegistrationListing = () => {
         </article>
       ),
       [strings.status]: (
-        <Tag
-          color={statusObjects[status]?.bg}
-          style={{
-            color: statusObjects[status].color,
-            padding: "0.5rem 1.5rem",
-            borderRadius: 20,
-            fontSize: 12,
-            fontWeight: 600,
-          }}
-        >
-          {statusObjects[status]?.label}
-        </Tag>
+        <Flex gap={2}>
+          <Tag
+            color={statusObjects[status]?.bg}
+            style={{
+              color: statusObjects[status].color,
+              padding: "0.5rem 1.5rem",
+              borderRadius: 20,
+              fontSize: 12,
+              fontWeight: 600,
+            }}
+          >
+            {statusObjects[status]?.label}
+          </Tag>
+          <Popover
+            title={
+              <Flex style={{ padding: "1rem 2rem" }}>
+                {updated_at ? (
+                  <p>
+                    Updated on
+                    <br />
+                    <strong>{dayjs(updated_at).format("Do MMMM, YYYY")}</strong>
+                  </p>
+                ) : (
+                  <p>No Action has been taken</p>
+                )}
+              </Flex>
+            }
+          />
+        </Flex>
       ),
       [strings.city]: <p>{city}</p>,
       [strings.variant]: (
@@ -131,6 +150,7 @@ const RegistrationListing = () => {
           onClick={() =>
             setStatusModalRegistration({
               created_at,
+              updated_at,
               name,
               email,
               city,
