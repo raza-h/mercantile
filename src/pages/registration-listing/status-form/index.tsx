@@ -21,8 +21,6 @@ import {
 import { showErrorToast } from "../../../utils/common";
 import { Skeleton } from "antd";
 import dayjs from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-dayjs.extend(advancedFormat);
 
 const StatusForm: FC<any> = forwardRef(
   (
@@ -69,7 +67,7 @@ const StatusForm: FC<any> = forwardRef(
           );
           newRegistrations[currentRegistrationIndex].status = values.status;
           newRegistrations[currentRegistrationIndex].updated_at =
-            dayjs().format("Do MMMM, YYYY");
+            dayjs().format();
           currentRegistrationIndex >= 0 &&
             updateRegistrations(newRegistrations);
           closeModal();
