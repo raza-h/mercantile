@@ -117,12 +117,14 @@ const RegistrationListing = () => {
           </Tag>
           <Popover
             title={
-              <Flex style={{ padding: "1rem 2rem" }}>
+              <Flex style={{ padding: "1rem 1.5rem" }}>
                 {updated_at ? (
                   <p>
                     Updated on
                     <br />
-                    <strong>{dayjs(updated_at).format("Do MMMM, YYYY")}</strong>
+                    <strong style={{ fontWeight: 600 }}>
+                      {dayjs(updated_at).format("Do MMMM, YYYY")}
+                    </strong>
                   </p>
                 ) : (
                   <p>No Action has been taken</p>
