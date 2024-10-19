@@ -218,7 +218,7 @@ const RegistrationListing = () => {
         dataSource={dataSource}
         loading={loading || countLoading}
         scroll={{
-          x: 1200,
+          x: 1400,
           y: registrations?.length > 3 && window.innerHeight < 800 ? 400 : 800,
         }}
         rows={total}
