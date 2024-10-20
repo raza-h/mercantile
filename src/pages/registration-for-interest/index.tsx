@@ -129,6 +129,8 @@ const RegistrationForInterest: FC<{}> = () => {
                   name="model"
                   onChange={(e) => {
                     setFieldValue("model", e);
+                    setFieldValue("storage", undefined);
+                    setFieldValue("color", undefined);
                   }}
                   value={values?.model!}
                   options={formatOptions(models)}
