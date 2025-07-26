@@ -62,7 +62,7 @@ jobs:
             --build-arg VITE_SUPABASE_URL=$VITE_SUPABASE_URL \
             --tag $ECR_REPOSITORY:latest \
             --tag $ECR_REPOSITORY:$IMAGE_TAG \
-            --file Dockerfile.prod \
+            --file Dockerfile \
             --push .
 
   deploy:
