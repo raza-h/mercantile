@@ -39,7 +39,6 @@ jobs:
         run: |
           IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
-          echo $IMAGE_TAG
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -61,15 +60,11 @@ jobs:
             --region "$AWS_REGION" \
             --query 'imageDetails[0].imageDigest' 2>/dev/null || echo "None")
 
-          echo $ECR_REPOSITORY
-          echo $IMAGE_TAG
-          echo $EXISTS
-
           if [[ "$EXISTS" != "None" && -n "$EXISTS" && "$EXISTS" != *"error"* ]]; then
-            echo "✅ Image exists in ECR with digest: $EXISTS"
+            echo "✅ Image exists in ECR. Proceeding with deployment"
             echo "skip_build=true" >> "$GITHUB_OUTPUT"
           else
-            echo "❌ Image does NOT exist in ECR"
+            echo "❌ Image does NOT exist in ECR. Proceeding with build and push"
             echo "skip_build=false" >> $GITHUB_OUTPUT
           fi
 
