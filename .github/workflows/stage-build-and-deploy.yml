@@ -104,10 +104,10 @@ jobs:
 
       - name: Update task definition image
         run: |
-          # Use jq to update the container image
           jq --arg image "$ECR_REPOSITORY:${GITHUB_SHA}" \
-            '.taskDefinition.containerDefinitions[0].image = $image | 
-            del(.taskDefinition.status, .taskDefinition.revision, .taskDefinition.taskDefinitionArn, .taskDefinition.compatibilities, .taskDefinition.registeredAt, .taskDefinition.registeredBy)' \
+            '.taskDefinition |
+            .containerDefinitions[0].image = $image |
+            del(.status, .revision, .taskDefinitionArn, .compatibilities, .registeredAt, .registeredBy)' \
             taskdef.json > taskdef-updated.json
 
       - name: Register new task definition with updated image
