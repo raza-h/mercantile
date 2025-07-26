@@ -102,32 +102,51 @@ jobs:
         run: |
           aws ecs describe-task-definition --task-definition $ECS_TASK_DEFINITION --region $AWS_REGION > taskdef.json
 
-      - name: Update task definition image
+      - name: Download current task definition
         run: |
-          jq --arg image "$ECR_REPOSITORY:${GITHUB_SHA}" \
-            '.taskDefinition |
-            .containerDefinitions[0].image = $image |
-            del(.status, .revision, .taskDefinitionArn, .compatibilities, .registeredAt, .registeredBy)' \
-            taskdef.json > taskdef-updated.json
+          aws ecs describe-task-definition \
+            --task-definition "$ECS_TASK_DEFINITION" \
+            --region "$AWS_REGION" \
+            > taskdef.json
 
-      - name: Register new task definition with updated image
-        id: register-task-def
+      - name: Create new task definition revision with updated image
         run: |
-          aws ecs register-task-definition \
-            --cli-input-json file://taskdef-updated.json > new-taskdef.json
-          # Extract new task definition ARN
-          NEW_TASK_DEF_ARN=$(jq -r '.taskDefinition.taskDefinitionArn' new-taskdef.json)
+          IMAGE_URI="$ECR_REPOSITORY:${GITHUB_SHA}"
+
+          jq --arg IMAGE "$IMAGE_URI" \
+            '.taskDefinition |
+            .containerDefinitions |= map(
+              if .name == env.CONTAINER_NAME then .image = $IMAGE else . end
+            ) |
+            del(
+              .taskDefinitionArn,
+              .revision,
+              .status,
+              .requiresAttributes,
+              .compatibilities,
+              .registeredAt,
+              .registeredBy
+            )' taskdef.json > new-taskdef.json
+
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://new-taskdef.json \
+            --region "$AWS_REGION" \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+
           echo "NEW_TASK_DEF_ARN=$NEW_TASK_DEF_ARN" >> $GITHUB_ENV
 
-      - name: Deploy updated task definition to ECS
+      - name: Update ECS service with new task definition
         run: |
           aws ecs update-service \
-            --cluster $ECS_CLUSTER \
-            --service $ECS_SERVICE \
-            --task-definition $NEW_TASK_DEF_ARN \
-            --region $AWS_REGION
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --task-definition "$NEW_TASK_DEF_ARN" \
+            --region "$AWS_REGION"
 
-      - name: Wait for service stability
+      - name: Awaiting Deployment
         run: |
-          aws ecs wait services-stable --cluster $ECS_CLUSTER --services $ECS_SERVICE --region $AWS_REGION
-
+          aws ecs wait services-stable \
+            --cluster "$ECS_CLUSTER" \
+            --services "$ECS_SERVICE" \
+            --region "$AWS_REGION"
