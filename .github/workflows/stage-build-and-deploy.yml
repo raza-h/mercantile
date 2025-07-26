@@ -60,6 +60,8 @@ jobs:
             --region "$AWS_REGION" \
             --query 'imageDetails[0].imageDigest' 2>/dev/null || echo "None")
 
+          echo $ECR_REPOSITORY
+          echo $IMAGE_TAG
           echo $EXISTS
 
           if [[ "$EXISTS" != "None" && -n "$EXISTS" && "$EXISTS" != *"error"* ]]; then
