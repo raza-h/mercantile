@@ -108,10 +108,13 @@ jobs:
             --task-definition "$ECS_TASK_DEFINITION" \
             --region "$AWS_REGION" \
             > taskdef.json
+      
+      - name: Set image tag
+        run: echo "IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Create new task definition revision with updated image
         run: |
-          IMAGE_URI="$ECR_REPOSITORY:${GITHUB_SHA}"
+          IMAGE_URI="$ECR_REPOSITORY:$IMAGE_TAG"
 
           jq --arg IMAGE "$IMAGE_URI" \
             '.taskDefinition |
