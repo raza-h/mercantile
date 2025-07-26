@@ -60,6 +60,8 @@ jobs:
             --region "$AWS_REGION" \
             --query 'imageDetails[0].imageDigest' 2>/dev/null || echo "None")
 
+          echo $IMAGE_TAG
+          
           if [[ "$EXISTS" != "None" && -n "$EXISTS" && "$EXISTS" != *"error"* ]]; then
             echo "✅ Image exists in ECR with digest: $EXISTS"
             echo "skip_build=true" >> "$GITHUB_OUTPUT"
