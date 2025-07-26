@@ -50,7 +50,26 @@ jobs:
         run: |
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPOSITORY
 
+      - name: Check if image already exists in ECR
+        id: check-image
+        run: |
+          EXISTS=$(aws ecr describe-images \
+            --repository-name "$ECR_REPOSITORY" \
+            --image-ids imageTag=$IMAGE_TAG \
+            --region $AWS_REGION \
+            --query 'imageDetails[0].imageDigest' \
+            --output text 2>/dev/null || true)
+
+          if [ "$EXISTS" != "None" ] && [ -n "$EXISTS" ]; then
+            echo "Image already exists, skipping build/push."
+            echo "skip_build=true" >> $GITHUB_OUTPUT
+          else
+            echo "Image not found, proceeding with build/push."
+            echo "skip_build=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build and push ARM64 Docker image
+        if: steps.check-image.outputs.skip_build == 'false'
         run: |
           docker buildx build \
             --platform linux/arm64 \
@@ -80,7 +99,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -88,7 +107,7 @@ jobs:
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Fetch deployment config from SSM
         run: |
@@ -98,19 +117,12 @@ jobs:
             echo "$VAR=$VALUE" >> $GITHUB_ENV
           done
 
-      - name: Fetch current ECS task definition JSON
-        run: |
-          aws ecs describe-task-definition --task-definition $ECS_TASK_DEFINITION --region $AWS_REGION > taskdef.json
-
-      - name: Download current task definition
-        run: |
-          aws ecs describe-task-definition \
-            --task-definition "$ECS_TASK_DEFINITION" \
-            --region "$AWS_REGION" \
-            > taskdef.json
-      
       - name: Set image tag
         run: echo "IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+
+      - name: Fetch current ECS task definition JSON
+        run: |
+          aws ecs describe-task-definition --task-definition "$ECS_TASK_DEFINITION" --region "$AWS_REGION" > taskdef.json
 
       - name: Create new task definition revision with updated image
         run: |
