@@ -98,14 +98,10 @@ jobs:
           IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
-      - name: Create imagedefinitions.json
-        run: |
-          printf '[{"name":"mercantile-staging-container","imageUri":"%s"}]' "$ECR_REPOSITORY:$IMAGE_TAG" > imagedefinitions.json
-
-      - name: Deploy to ECS
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      - name: Deploy updated image to ECS
+        uses: aws-actions/amazon-ecs-update-service@v1
         with:
-          task-definition: imagedefinitions.json
-          service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
+          service: ${{ env.ECS_SERVICE }}
+          force-new-deployment: true
+          image: ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
