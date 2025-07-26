@@ -64,7 +64,7 @@ jobs:
             echo "skip_build=true" >> "$GITHUB_OUTPUT"
           else
             echo "❌ Image does NOT exist in ECR"
-            echo "skip_build=true" >> $GITHUB_OUTPUT
+            echo "skip_build=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Build and push ARM64 Docker image
