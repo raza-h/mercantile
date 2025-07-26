@@ -54,8 +54,9 @@ jobs:
       - name: Check if image already exists in ECR
         id: check-image
         run: |
+          REPO_NAME="${ECR_REPOSITORY##*/}"
           EXISTS=$(aws ecr describe-images \
-            --repository-name "$ECR_REPOSITORY" \
+            --repository-name "$REPO_NAME" \
             --image-ids imageTag="$IMAGE_TAG" \
             --region "$AWS_REGION" \
             --query 'imageDetails[0].imageDigest' 2>/dev/null || echo "None")
