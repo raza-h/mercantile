@@ -54,11 +54,10 @@ jobs:
         id: check-image
         run: |
           EXISTS=$(aws ecr describe-images \
-            --repository-name "$ECR_REPOSITORY" \
-            --image-ids imageTag=$IMAGE_TAG \
-            --region $AWS_REGION \
-            --query 'imageDetails[0].imageDigest' \
-            --output text 2>/dev/null || true)
+            --repository-name "mercantile" \
+            --image-ids imageTag=5676c71 \
+            --region "eu-west-1" \
+            --query 'imageDetails[0].imageDigest' 2>/dev/null || echo "None")
 
           if [ "$EXISTS" != "None" ] && [ -n "$EXISTS" ]; then
             echo "Image already exists, skipping build/push."
