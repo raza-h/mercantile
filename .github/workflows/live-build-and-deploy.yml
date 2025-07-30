@@ -1,0 +1,167 @@
+name: Build and Deploy (Live)
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'live-*'
+
+jobs:
+  build:
+    name: Build and Push ARM64 Docker Image to ECR
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: eu-west-1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Fetch environment variables from SSM
+        run: |
+          PARAM_PREFIX="/mercantile/live"
+          for VAR in VITE_USER_EMAIL_TEMPLATE VITE_EMAIL_USER_ID VITE_EMAIL_TEMPLATE VITE_EMAIL_SERVICE_ID VITE_SUPABASE_API_KEY VITE_SUPABASE_URL ECR_REPOSITORY; do
+            VALUE=$(aws ssm get-parameter --name "$PARAM_PREFIX/$VAR" --with-decryption --query "Parameter.Value" --output text)
+            echo "$VAR=$VALUE" >> $GITHUB_ENV
+            echo "$VAR=$VALUE" >> .env
+          done
+
+      - name: Set image tag to commit hash
+        run: |
+          IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPOSITORY
+
+      - name: Check if image already exists in ECR
+        id: check-image
+        run: |
+          REPO_NAME="${ECR_REPOSITORY##*/}"
+          EXISTS=$(aws ecr describe-images \
+            --repository-name "$REPO_NAME" \
+            --image-ids imageTag="$IMAGE_TAG" \
+            --region "$AWS_REGION" \
+            --query 'imageDetails[0].imageDigest' 2>/dev/null || echo "None")
+
+          if [[ "$EXISTS" != "None" && -n "$EXISTS" && "$EXISTS" != *"error"* ]]; then
+            echo "✅ Image exists in ECR. Proceeding with deployment"
+            echo "skip_build=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "❌ Image does NOT exist in ECR. Proceeding with build and push"
+            echo "skip_build=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build and push ARM64 Docker image
+        if: steps.check-image.outputs.skip_build == 'false'
+        run: |
+          docker buildx build \
+            --platform linux/arm64 \
+            --build-arg VITE_USER_EMAIL_TEMPLATE=$VITE_USER_EMAIL_TEMPLATE \
+            --build-arg VITE_EMAIL_USER_ID=$VITE_EMAIL_USER_ID \
+            --build-arg VITE_EMAIL_TEMPLATE=$VITE_EMAIL_TEMPLATE \
+            --build-arg VITE_EMAIL_SERVICE_ID=$VITE_EMAIL_SERVICE_ID \
+            --build-arg VITE_SUPABASE_API_KEY=$VITE_SUPABASE_API_KEY \
+            --build-arg VITE_SUPABASE_URL=$VITE_SUPABASE_URL \
+            --tag $ECR_REPOSITORY:latest \
+            --tag $ECR_REPOSITORY:$IMAGE_TAG \
+            --file Dockerfile \
+            --push .
+
+  deploy:
+    name: Deploy to ECS
+    runs-on: ubuntu-latest
+    environment: production
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+
+    env:
+      AWS_REGION: eu-west-1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Fetch deployment config from SSM
+        run: |
+          PARAM_PREFIX="/mercantile/live"
+          for VAR in ECR_REPOSITORY ECS_CLUSTER ECS_SERVICE ECS_TASK_DEFINITION CONTAINER_NAME; do
+            VALUE=$(aws ssm get-parameter --name "$PARAM_PREFIX/$VAR" --with-decryption --query "Parameter.Value" --output text)
+            echo "$VAR=$VALUE" >> $GITHUB_ENV
+          done
+
+      - name: Set image tag
+        run: echo "IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+
+      - name: Fetch current ECS task definition JSON
+        run: |
+          aws ecs describe-task-definition --task-definition "$ECS_TASK_DEFINITION" --region "$AWS_REGION" > taskdef.json
+
+      - name: Create new task definition revision with updated image
+        run: |
+          IMAGE_URI="$ECR_REPOSITORY:$IMAGE_TAG"
+
+          jq --arg IMAGE "$IMAGE_URI" \
+            '.taskDefinition |
+            .containerDefinitions |= map(
+              if .name == env.CONTAINER_NAME then .image = $IMAGE else . end
+            ) |
+            del(
+              .taskDefinitionArn,
+              .revision,
+              .status,
+              .requiresAttributes,
+              .compatibilities,
+              .registeredAt,
+              .registeredBy
+            )' taskdef.json > new-taskdef.json
+
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://new-taskdef.json \
+            --region "$AWS_REGION" \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+
+          echo "NEW_TASK_DEF_ARN=$NEW_TASK_DEF_ARN" >> $GITHUB_ENV
+
+      - name: Update ECS service with new task definition
+        run: |
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --task-definition "$NEW_TASK_DEF_ARN" \
+            --region "$AWS_REGION"
+
+      - name: Awaiting Deployment
+        run: |
+          aws ecs wait services-stable \
+            --cluster "$ECS_CLUSTER" \
+            --services "$ECS_SERVICE" \
+            --region "$AWS_REGION"
