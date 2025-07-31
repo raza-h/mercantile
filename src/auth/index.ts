@@ -1,7 +1,15 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAPIKey = import.meta.env.VITE_SUPABASE_API_KEY;
-const supabase = new SupabaseClient(supabaseUrl, supabaseAPIKey);
+let supabase: SupabaseClient | null = null;
 
-export default supabase;
+const getSupabaseClient = async () => {
+  if (!supabase) {
+    const { SupabaseClient } = await import('@supabase/supabase-js');
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseAPIKey = import.meta.env.VITE_SUPABASE_API_KEY;
+    supabase = new SupabaseClient(supabaseUrl, supabaseAPIKey);
+  }
+  return supabase;
+};
+
+export default getSupabaseClient;
