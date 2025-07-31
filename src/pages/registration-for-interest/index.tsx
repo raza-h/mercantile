@@ -127,9 +127,9 @@ const RegistrationForInterest: FC<{}> = () => {
                   label="Model"
                   placeholder="Select Model"
                   name="model"
-                  onChange={(e) => {
-                    setFieldValue("model", e);
-                    setFieldValue("storage", undefined);
+                  onChange={async (e) => {
+                    await setFieldValue("model", e);
+                    await setFieldValue("storage", undefined);
                     setFieldValue("color", undefined);
                   }}
                   value={values?.model!}
@@ -192,10 +192,14 @@ const RegistrationForInterest: FC<{}> = () => {
                     }
                   )}
               </Flex>
-              <ErrorMessage
-                name="color"
-                errorMsg={touched?.color && errors?.color ? errors?.color : ""}
-              />
+              {!!values?.model && (
+                <ErrorMessage
+                  name="color"
+                  errorMsg={
+                    touched?.color && errors?.color ? errors?.color : ""
+                  }
+                />
+              )}
               <Divider />
               <h3>
                 Are you interested in the new Apple Watch Series 10 or AirPods
