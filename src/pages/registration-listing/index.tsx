@@ -7,10 +7,9 @@ import { columns, statusObjects } from "./registration-listing-constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { showErrorToast } from "../../utils/common";
 import dayjs from "dayjs";
-import Table from "../../common/table";
 import { EditOutlined } from "@ant-design/icons";
 import StatusForm from "./status-form";
-import { Popover } from "../../common";
+import { Popover, Table } from "../../common";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 dayjs.extend(advancedFormat);
 

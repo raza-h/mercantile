@@ -1,5 +1,7 @@
-import supabase from "../auth";
+import { lazy } from "react";
 import { showErrorToast, showSuccessToast } from "../utils/common";
+
+const supabase: any = lazy(() => import('../auth') as any);
 
 export const login = async (email: string, password: string) => {
   try {
