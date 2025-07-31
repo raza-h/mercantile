@@ -1,8 +1,9 @@
-import supabase from "../auth";
 import { showErrorToast, showSuccessToast } from "../utils/common";
+import getSupabaseClient from '../auth';
 
 export const login = async (email: string, password: string) => {
   try {
+    const supabase = await getSupabaseClient();
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -18,6 +19,7 @@ export const login = async (email: string, password: string) => {
 
 export const getSession = async () => {
   try {
+    const supabase = await getSupabaseClient();
     const { data, error } = await supabase.auth.getSession();
     if (error) throw error;
     return !!data.session;
@@ -29,6 +31,7 @@ export const getSession = async () => {
 
 export const logout = async () => {
   try {
+    const supabase = await getSupabaseClient();
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
     return true;
