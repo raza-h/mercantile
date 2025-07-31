@@ -1,9 +1,8 @@
-import { lazy } from "react";
 import { PAGE_SIZE } from "../constants/generic";
 import { showErrorToast, showSuccessToast } from "../utils/common";
 import emailjs from "emailjs-com";
+import getSupabaseClient from '../auth';
 
-const supabase: any = lazy(() => import('../auth') as any);
 const table = "registrations";
 
 export const sendConfirmationEmailToAdmin = async (payload: {
@@ -46,6 +45,7 @@ export const sendConfirmationEmailToUser = async (payload: {
 
 export const registerForInterest = async (payload: { [key: string]: any }) => {
   try {
+    const supabase = await getSupabaseClient();
     const res = await supabase.from(table).insert(payload);
     await sendConfirmationEmailToAdmin({
       name: payload?.name,
@@ -68,6 +68,7 @@ export const registerForInterest = async (payload: { [key: string]: any }) => {
 
 export const fetchTotalCount = async () => {
   try {
+    const supabase = await getSupabaseClient();
     const { count, error } = await supabase
       .from(table)
       .select("*", { count: "exact" });
@@ -87,6 +88,7 @@ export const getRegistrations = async (page: number = 1) => {
   const from = PAGE_SIZE * (page - 1);
   const to = from + PAGE_SIZE - 1;
   try {
+    const supabase = await getSupabaseClient();
     const { data, error } = await supabase
       .from(table)
       .select("*")
@@ -102,6 +104,7 @@ export const getRegistrations = async (page: number = 1) => {
 
 export const getRegistrationStatus = async (id: string | number) => {
   try {
+    const supabase = await getSupabaseClient();
     const { data, error } = await supabase.from(table).select("*").eq("id", id);
     if (error) throw error;
     return data?.length ? data[0]?.status : undefined;
@@ -116,6 +119,7 @@ export const updateRegistrationStatus = async (
   payload: { [key: string]: any }
 ) => {
   try {
+    const supabase = await getSupabaseClient();
     const { error } = await supabase.from(table).update(payload).eq("id", id);
 
     if (error) {
