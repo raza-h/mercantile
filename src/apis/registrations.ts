@@ -1,8 +1,9 @@
-import supabase from "../auth";
+import { lazy } from "react";
 import { PAGE_SIZE } from "../constants/generic";
 import { showErrorToast, showSuccessToast } from "../utils/common";
 import emailjs from "emailjs-com";
 
+const supabase: any = lazy(() => import('../auth') as any);
 const table = "registrations";
 
 export const sendConfirmationEmailToAdmin = async (payload: {

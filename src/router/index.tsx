@@ -7,14 +7,12 @@ import {
   NOT_FOUND_PATH,
 } from "../constants/paths";
 import ProtectedRoute from "../providers/protected-route";
-import RegistrationForInterest from "../pages/registration-for-interest";
 import InternalWrapper from "../providers/internal-wrapper";
-import RegistrationListing from "../pages/registration-listing";
-import AdminLogin from "../pages/admin-login";
 import { useEffect, useState } from "react";
 import { getSession } from "../apis/auth";
 import { Spin } from "antd";
 import { showErrorToast } from "../utils/common";
+import { AdminLogin, RegistrationForInterest, RegistrationListing } from "../pages";
 
 const Router = () => {
   const [session, setSession] = useState(false);
