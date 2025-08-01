@@ -22,9 +22,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
-    "sass": "^1.79.4",
-    "vite-plugin-imp": "^2.4.0",
-    "vite-plugin-sass": "^0.1.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {
@@ -36,6 +33,7 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
+    "sass-embedded": "^1.89.2",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1"
