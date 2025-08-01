@@ -1,5 +1,5 @@
 import { Checkbox, Col, Divider, Flex, Image, Tag } from "antd";
-import { FC, useEffect, useState } from "react";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { iphone16 } from "../../assets";
 import styles from "./index.module.scss";
 import { Formik } from "formik";
@@ -25,7 +25,7 @@ import ProgressButtons from "./progress-buttons";
 import { COLOR_HEX } from "../../constants/generic";
 import { showErrorToast } from "../../utils/common";
 
-const RegistrationForInterest: FC<{}> = () => {
+const RegistrationForInterest: FC<PropsWithChildren> = () => {
   const [step, setStep] = useState(1);
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -37,7 +37,7 @@ const RegistrationForInterest: FC<{}> = () => {
         setInitialLoading(true);
         const cities = await getCities();
         setCities(cities);
-      } catch (error: any) {
+      } catch (error: unknown) {
         showErrorToast({ action: "fetching cities", error });
       } finally {
         setInitialLoading(false);
@@ -58,10 +58,10 @@ const RegistrationForInterest: FC<{}> = () => {
             await registerForInterest({
               ...values,
               status: "pending",
-              interests: values?.interests?.join(", "),
+              interests: values.interests.join(", "),
             });
             setStep(3);
-          } catch (error: any) {
+          } catch (error: unknown) {
             showErrorToast({ action: "registering your interest", error });
           } finally {
             setLoading(false);
@@ -84,7 +84,7 @@ const RegistrationForInterest: FC<{}> = () => {
                   onChange={(e) => {
                     setFieldValue("name", e.target.value);
                   }}
-                  value={values?.name!}
+                  value={values.name!}
                   errorMsg={touched?.name && errors?.name && errors?.email}
                 />
                 <Input
@@ -94,7 +94,7 @@ const RegistrationForInterest: FC<{}> = () => {
                   onChange={(e) => {
                     setFieldValue("email", e.target.value);
                   }}
-                  value={values?.email!}
+                  value={values.email!}
                   errorMsg={touched?.name && errors?.email && errors?.email}
                 />
                 <Input
@@ -104,7 +104,7 @@ const RegistrationForInterest: FC<{}> = () => {
                   onChange={(e) => {
                     setFieldValue("phone", e.target.value.slice(6));
                   }}
-                  value={`(+92) ${values?.phone!}`}
+                  value={`(+92) ${values.phone!}`}
                   errorMsg={touched?.name && errors?.phone && errors?.phone}
                 />
                 <Select
@@ -115,7 +115,7 @@ const RegistrationForInterest: FC<{}> = () => {
                   onChange={(e) => {
                     setFieldValue("city", e);
                   }}
-                  value={values?.city!}
+                  value={values.city!}
                   options={formatOptions(cities)}
                   errorMsg={touched?.name && errors?.city && errors?.city}
                 />
@@ -132,7 +132,7 @@ const RegistrationForInterest: FC<{}> = () => {
                     await setFieldValue("storage", undefined);
                     setFieldValue("color", undefined);
                   }}
-                  value={values?.model!}
+                  value={values.model!}
                   options={formatOptions(models)}
                   errorMsg={touched?.name && errors?.model && errors?.model}
                 />
@@ -143,7 +143,7 @@ const RegistrationForInterest: FC<{}> = () => {
                   onChange={(e) => {
                     setFieldValue("storage", e);
                   }}
-                  value={values?.storage!}
+                  value={values.storage!}
                   disabled={!values?.model}
                   options={getDynamicStorageOptions(values?.model ?? "")}
                   errorMsg={touched?.name && errors?.storage && errors?.storage}
@@ -222,7 +222,7 @@ const RegistrationForInterest: FC<{}> = () => {
                           "interests",
                           values?.interests?.includes(option)
                             ? values.interests.filter((item) => item !== option)
-                            : [...values?.interests!, option]
+                            : [...values.interests!, option]
                         );
                       }}
                     >

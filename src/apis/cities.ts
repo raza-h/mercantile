@@ -7,7 +7,7 @@ export const getCities = async (params: string = '') => {
         if (response?.data.success === true) {
             return response.data.data;
         }
-    } catch(error: any) {
+    } catch(error: unknown) {
         showErrorToast({action: 'fetching cities', error});
     }
 }

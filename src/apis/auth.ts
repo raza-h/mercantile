@@ -9,9 +9,11 @@ export const login = async (email: string, password: string) => {
       password,
     });
     if (error) throw error;
-    !!data?.user && showSuccessToast({ message: "Log in successful" });
+    if (data?.user) {
+      showSuccessToast({ message: "Log in successful" });
+    } 
     return !!data?.user;
-  } catch (error: any) {
+  } catch (error: unknown) {
     showErrorToast({action: 'log in', error});
     return false;
   }
@@ -23,7 +25,7 @@ export const getSession = async () => {
     const { data, error } = await supabase.auth.getSession();
     if (error) throw error;
     return !!data.session;
-  } catch (error: any) {
+  } catch (error: unknown) {
     showErrorToast({action: 'authentication', error});
     return false;
   }
@@ -35,7 +37,7 @@ export const logout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
     return true;
-  } catch (error: any) {
+  } catch (error: unknown) {
     showErrorToast({action: 'log out', error});
     return false;
   }
