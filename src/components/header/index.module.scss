@@ -1,4 +1,4 @@
-@import '../../styles/antd.theme.scss';
+@use '../../styles/antd.theme.scss' as *;
 
 .header {
     height: 100px;

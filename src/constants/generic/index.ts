@@ -11,3 +11,15 @@ export const COLOR_HEX: { [key: string]: string } = {
     "White Titanium": "#F2F1EF",
     "Black Titanium": "#4D4D4C",
 }
+
+export const statuses: string[] = [
+  "canceled",
+  "paid",
+  "not_responding",
+  "not_interested",
+  "already_bought",
+  "voice_msg",
+  "follow_up",
+  "called",
+  "pending",
+] as const;

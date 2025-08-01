@@ -1,4 +1,4 @@
-import { Input as AntdInput } from "antd";
+import { Input as AntdInput, InputProps } from "antd";
 import { ChangeEventHandler, FC } from "react";
 import styles from "./index.module.scss";
 import ErrorMessage from "../error-message";
@@ -11,8 +11,7 @@ const Input: FC<{
   name?: string;
   type?: string;
   errorMsg?: string | null | false;
-  [key: string]: any;
-}> = ({
+} & InputProps> = ({
   label,
   value,
   onChange,

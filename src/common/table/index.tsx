@@ -1,20 +1,19 @@
-import { Table as AntTable } from "antd";
+import { Table as AntTable, TableProps } from "antd";
 import { PAGE_SIZE } from "../../constants/generic";
 import useTableStyles from "./hooks/useTableStyles";
 import cx from "clsx";
 import { column } from "./constants/types";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
 const Table: FC<{
   columns?: column[];
-  dataSource?: any[];
+  dataSource?: {[key: string]: ReactNode}[];
   loading?: boolean;
   className?: string;
   rows?: number;
   currentPage?: number;
   handlePageChange?: (page: number) => void;
-  [key: string]: any;
-}> = ({
+} & TableProps> = ({
   columns = [],
   dataSource = [],
   loading = false,

@@ -1,12 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { ADMIN_LOGIN_PATH } from "../../constants/paths";
-import { FC, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import InternalWrapper from "../internal-wrapper";
 import { Button, Flex } from "antd";
 import { showErrorToast } from "../../utils/common";
 import { logout } from "../../apis/auth";
 
-const ProtectedRoute: FC<{ session?: boolean; setSession?: any }> = ({
+const ProtectedRoute: FC<{ session?: boolean; setSession?: Dispatch<SetStateAction<boolean>> }> = ({
   session = true,
   setSession = () => {},
 }) => {
@@ -26,7 +26,7 @@ const ProtectedRoute: FC<{ session?: boolean; setSession?: any }> = ({
                 setLoading(true);
                 const success = await logout();
                 setSession(!success);
-              } catch (error: any) {
+              } catch (error: unknown) {
                 showErrorToast({ action: "log out", error });
               } finally {
                 setLoading(false);

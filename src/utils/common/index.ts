@@ -2,7 +2,7 @@ import { notification } from "antd";
 
 export const showErrorToast: (config: {
   action: string;
-  error: { message: string; [key: string]: any };
+  error: unknown;
   placement?:
     | "topRight"
     | "top"
@@ -13,12 +13,12 @@ export const showErrorToast: (config: {
     | undefined;
 }) => void = ({
   action = "",
-  error = { message: "" },
+  error,
   placement = "topRight",
 }) => {
   notification.error({
     message: `Error occurred during ${action}`,
-    description: error.message,
+    description: error instanceof Error ? error.message : '',
     placement: placement,
     duration: 3,
   });

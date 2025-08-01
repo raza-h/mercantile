@@ -1,9 +1,9 @@
 import { Layout } from "antd";
-import { FC } from "react";
+import { FC, PropsWithChildren } from "react";
 import "./index.scss";
 import Router from "./router/index.tsx";
 
-const App: FC<{}> = () => {
+const App: FC<PropsWithChildren> = () => {
   return (
     <Layout className="root">
       <Router />

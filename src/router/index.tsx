@@ -24,7 +24,7 @@ const Router = () => {
       try {
         const session = await getSession();
         setSession(session);
-      } catch (error: any) {
+      } catch (error: unknown) {
         showErrorToast({ action: "authentication", error });
       } finally {
         setLoading(false);
