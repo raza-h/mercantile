@@ -1,8 +1,9 @@
 import * as yup from "yup";
 import strings from "../../../constants/strings";
-import { dynamicOption, registrationForm, selectOption } from "./types";
+import { dynamicOption, selectOption } from "./types";
+import { Registration } from "../../../types/registration";
 
-export const registrationFormInitialValues: registrationForm = {
+export const registrationFormInitialValues: Omit<Registration, 'interests' | 'status'> & { interests: Array<string> } = {
   name: "",
   email: "",
   phone: "",

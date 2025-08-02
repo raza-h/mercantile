@@ -1,4 +1,4 @@
-@import '../../styles/antd.theme.scss';
+@use '../../styles/antd.theme.scss' as *;
 
 .main {
     width: 100%;

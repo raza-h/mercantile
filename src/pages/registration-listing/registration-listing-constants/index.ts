@@ -58,7 +58,7 @@ export const statuses: string[] = [
   "follow_up",
   "called",
   "pending",
-];
+] as const;
 
 export const formatStatusOptions = (statuses: string[]) => {
   return statuses.map((status) => ({

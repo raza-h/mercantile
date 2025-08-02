@@ -1,11 +1,11 @@
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import styles from "./index.module.scss";
 import { Button, Flex } from "antd";
 
 const ProgressButtons: FC<{
-  step: any;
-  setStep: any;
-  handleSubmit?: any;
+  step: number;
+  setStep: Dispatch<SetStateAction<number>>;
+  handleSubmit?: () => void;
   loading?: boolean;
 }> = ({
   step = 1,

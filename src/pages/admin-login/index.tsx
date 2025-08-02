@@ -3,7 +3,7 @@ import Card from "../../common/card";
 import styles from "./index.module.scss";
 import Input from "../../common/input";
 import { Button } from "antd";
-import { FC, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import * as yup from "yup";
 import strings from "../../constants/strings";
 import { ADMIN_REGISTRATION_LISTING_PATH } from "../../constants/paths";
@@ -11,7 +11,7 @@ import { login } from "../../apis/auth";
 import { useNavigate } from "react-router-dom";
 import { showErrorToast } from "../../utils/common";
 
-const Login: FC<{ session: boolean; setSession: any }> = ({
+const Login: FC<{ session: boolean; setSession: Dispatch<SetStateAction<boolean>> }> = ({
   session = false,
   setSession = () => {},
 }) => {
@@ -19,8 +19,10 @@ const Login: FC<{ session: boolean; setSession: any }> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    session && navigate(ADMIN_REGISTRATION_LISTING_PATH);
-  }, [session]);
+    if (session) {  
+      navigate(ADMIN_REGISTRATION_LISTING_PATH);
+    }
+  }, [session, navigate]);
 
   return (
     <main className={styles.main}>
@@ -31,7 +33,7 @@ const Login: FC<{ session: boolean; setSession: any }> = ({
             setLoading(true);
             const authorized = await login(values?.email, values?.password);
             setSession(authorized);
-          } catch (error: any) {
+          } catch (error: unknown) {
             showErrorToast({ action: "log in", error });
           } finally {
             setLoading(false);

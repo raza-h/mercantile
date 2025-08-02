@@ -2,6 +2,7 @@ import { PAGE_SIZE } from "../constants/generic";
 import { showErrorToast, showSuccessToast } from "../utils/common";
 import emailjs from "emailjs-com";
 import getSupabaseClient from '../auth';
+import { Registration } from "../types/registration";
 
 const table = "registrations";
 
@@ -19,7 +20,7 @@ export const sendConfirmationEmailToAdmin = async (payload: {
       },
       import.meta.env.VITE_EMAIL_USER_ID
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     showErrorToast({ action: "sending confirmation email", error });
   }
 };
@@ -38,12 +39,12 @@ export const sendConfirmationEmailToUser = async (payload: {
       },
       import.meta.env.VITE_EMAIL_USER_ID
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     showErrorToast({ action: "sending confirmation email", error });
   }
 };
 
-export const registerForInterest = async (payload: { [key: string]: any }) => {
+export const registerForInterest = async (payload: Registration) => {
   try {
     const supabase = await getSupabaseClient();
     const res = await supabase.from(table).insert(payload);
@@ -57,7 +58,7 @@ export const registerForInterest = async (payload: { [key: string]: any }) => {
       email: payload?.email,
     });
     return res;
-  } catch (error: any) {
+  } catch (error: unknown) {
     showErrorToast({
       action:
         "registering your interest. Please verify the details and try again.",
@@ -75,7 +76,7 @@ export const fetchTotalCount = async () => {
 
     if (error) throw error;
     return count;
-  } catch (error: any) {
+  } catch (error: unknown) {
     showErrorToast({
       action: "fetching some details about the registrations",
       error,
@@ -96,7 +97,7 @@ export const getRegistrations = async (page: number = 1) => {
       .order("created_at", { ascending: false });
     if (error) throw error;
     return data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     showErrorToast({ action: "fetching registrations", error });
     return [];
   }
@@ -108,7 +109,7 @@ export const getRegistrationStatus = async (id: string | number) => {
     const { data, error } = await supabase.from(table).select("*").eq("id", id);
     if (error) throw error;
     return data?.length ? data[0]?.status : undefined;
-  } catch (error: any) {
+  } catch (error: unknown) {
     showErrorToast({ action: "fetching registrations", error });
     return undefined;
   }
@@ -116,7 +117,7 @@ export const getRegistrationStatus = async (id: string | number) => {
 
 export const updateRegistrationStatus = async (
   id: string | number,
-  payload: { [key: string]: any }
+  payload: Partial<Registration>
 ) => {
   try {
     const supabase = await getSupabaseClient();
@@ -128,7 +129,7 @@ export const updateRegistrationStatus = async (
       showSuccessToast({ message: "Status updated successfully" });
       return true;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     showErrorToast({ action: "updating registration status", error });
     return false;
   }
