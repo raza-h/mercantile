@@ -11,18 +11,18 @@ import { EditOutlined } from "@ant-design/icons";
 import StatusForm from "./status-form";
 import { Popover, Table } from "../../common";
 import advancedFormat from "dayjs/plugin/advancedFormat";
+import { RegistrationDTO } from "../../types/registration";
+import { FormRef } from "../../types/formik";
 dayjs.extend(advancedFormat);
 
 const RegistrationListing = () => {
-  const [registrations, setRegistrations] = useState<any[]>([]);
+  const [registrations, setRegistrations] = useState<RegistrationDTO[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [countLoading, setCountLoading] = useState(false);
   const [statusChangeLoading, setStatusChangeLoading] = useState(false);
-  const [statusModalRegistration, setStatusModalRegistration] = useState<{
-    [key: string]: any;
-  } | null>(null);
-  const formRef = useRef<any>(null);
+  const [statusModalRegistration, setStatusModalRegistration] = useState<RegistrationDTO | null>(null);
+  const formRef = useRef<FormRef>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const current = Number(new URLSearchParams(location.search).get("page")) || 1;
@@ -37,7 +37,7 @@ const RegistrationListing = () => {
       try {
         const count = await fetchTotalCount();
         setTotal(count ?? 0);
-      } catch (error: any) {
+      } catch (error: unknown) {
         showErrorToast({
           action: "fetching some details about the registrations",
           error,
@@ -56,7 +56,7 @@ const RegistrationListing = () => {
         setLoading(true);
         const data = await getRegistrations(current);
         setRegistrations(data);
-      } catch (error: any) {
+      } catch (error: unknown) {
         showErrorToast({ action: "fetching registrations", error });
       } finally {
         setLoading(false);
@@ -64,7 +64,7 @@ const RegistrationListing = () => {
     };
 
     fetchRegistrations();
-  }, [location.search]);
+  }, [location.search, setLoading, setRegistrations, current]);
 
   const dataSource = registrations?.map(
     ({
@@ -194,7 +194,9 @@ const RegistrationListing = () => {
           setStatusChangeLoading(false);
         }}
         onOk={async () => {
-          formRef.current.submit();
+          if (formRef?.current) {
+            formRef.current?.submit();
+          }
         }}
         okButtonProps={{ loading: statusChangeLoading }}
         destroyOnClose

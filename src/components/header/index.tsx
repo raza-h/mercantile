@@ -1,6 +1,6 @@
 import { Flex, Image } from "antd";
 import { Header } from "antd/es/layout/layout";
-import { authorizedDistributor } from "../../assets";
+import { authorizedDistributor, mercantileLogo } from "../../assets";
 import styles from "./index.module.scss";
 
 const TopHeader = () => {
@@ -10,10 +10,11 @@ const TopHeader = () => {
         src={"https://www.epanorama.pk/images/thumbs/0000110_Header-Logo.png"}
         preview={false}
         width={200}
+        fetchPriority={'high'}
       />
       <Flex gap={8}>
         <Image
-          src={"https://mercantile.com.pk/assets/images/logo.svg"}
+          src={mercantileLogo}
           preview={false}
           width={80}
         />

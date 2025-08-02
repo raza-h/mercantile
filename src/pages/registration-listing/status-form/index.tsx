@@ -1,19 +1,19 @@
-import { Formik, FormikValues } from "formik";
+import { Formik, FormikProps, FormikValues } from "formik";
 import {
-  FC,
+  Dispatch,
+  ForwardedRef,
   forwardRef,
-  ReactNode,
-  Ref,
+  ForwardRefExoticComponent,
+  PropsWithoutRef,
+  RefAttributes,
+  SetStateAction,
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
 } from "react";
 import Select from "../../../common/select";
-import {
-  formatStatusOptions,
-  statuses,
-} from "../registration-listing-constants";
+import { formatStatusOptions } from "../registration-listing-constants";
 import {
   getRegistrationStatus,
   updateRegistrationStatus,
@@ -21,19 +21,33 @@ import {
 import { showErrorToast } from "../../../utils/common";
 import { Skeleton } from "antd";
 import dayjs from "dayjs";
+import { statuses } from "../../../constants/generic";
+import { RegistrationDTO } from "../../../types/registration";
+import { FormRef } from "../../../types/formik";
 
-const StatusForm: FC<any> = forwardRef(
+type StatusFormProps = {
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  closeModal: () => void;
+  updateRegistrations: Dispatch<SetStateAction<RegistrationDTO[]>>;
+  registrations: RegistrationDTO[];
+  registration: RegistrationDTO | null;
+}
+
+const StatusForm = forwardRef<
+  FormRef,
+  StatusFormProps
+>(
   (
     {
-      registration = {},
+      registration,
       setLoading = () => {},
       closeModal = () => {},
       updateRegistrations = () => {},
       registrations = [],
     },
-    ref: Ref<ReactNode>
+    ref: ForwardedRef<FormRef>
   ) => {
-    const formikRef = useRef<any>(null);
+    const formikRef = useRef<FormikProps<FormikValues>>(null);
     const [status, setStatus] = useState(undefined);
     const [fetchLoading, setFetchLoading] = useState(false);
 
@@ -41,9 +55,13 @@ const StatusForm: FC<any> = forwardRef(
       const fetchCurrentStatus = async () => {
         try {
           setFetchLoading(true);
-          const currentStatus = await getRegistrationStatus(registration?.id);
-          setStatus(currentStatus);
-        } catch (error: any) {
+          if (registration?.id) {
+            const currentStatus = await getRegistrationStatus(registration?.id);
+            setStatus(currentStatus);
+          } else {
+            throw "Registration does not exist";
+          }
+        } catch (error: unknown) {
           showErrorToast({ action: "fetching current status", error });
         } finally {
           setFetchLoading(false);
@@ -51,35 +69,40 @@ const StatusForm: FC<any> = forwardRef(
       };
 
       fetchCurrentStatus();
-    }, []);
+    }, [setFetchLoading, setStatus, registration?.id]);
 
     const changeStatus = async (values: FormikValues) => {
       try {
         setLoading(true);
-        const success = await updateRegistrationStatus(
-          registration?.id,
-          values
-        );
-        if (success) {
-          let newRegistrations = [...registrations];
-          const currentRegistrationIndex = registrations.findIndex(
-            (item: { [key: string]: any }) => item.id === registration?.id
+        if (registration?.id) {
+          const success = await updateRegistrationStatus(
+            registration?.id,
+            values
           );
-          newRegistrations[currentRegistrationIndex].status = values.status;
-          newRegistrations[currentRegistrationIndex].updated_at =
-            dayjs().format();
-          currentRegistrationIndex >= 0 &&
-            updateRegistrations(newRegistrations);
-          closeModal();
+          if (success) {
+            const newRegistrations = [...registrations];
+            const currentRegistrationIndex = registrations.findIndex(
+              (item: RegistrationDTO) => item.id === registration?.id
+            );
+            newRegistrations[currentRegistrationIndex].status = values.status;
+            newRegistrations[currentRegistrationIndex].updated_at =
+              dayjs().format();
+            if (currentRegistrationIndex >= 0) {
+              updateRegistrations(newRegistrations);
+            }
+            closeModal();
+          }
+        } else {
+          throw "Registration does not exist";
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         showErrorToast({ action: "updating status", error });
       } finally {
         setLoading(false);
       }
     };
 
-    useImperativeHandle<any, any>(ref, () => ({
+    useImperativeHandle<FormRef, FormRef>(ref, () => ({
       submit: () => {
         formikRef.current?.submitForm();
       },
@@ -110,4 +133,4 @@ const StatusForm: FC<any> = forwardRef(
   }
 );
 
-export default StatusForm;
+export default StatusForm as ForwardRefExoticComponent<PropsWithoutRef<StatusFormProps> & RefAttributes<FormRef>>;
