@@ -49,9 +49,8 @@ export const models: string[] = [
   "iPhone 16 Pro Max",
 ];
 
-export const formatOptions: (
-  options: string[]
-) => selectOption[] = (options) => options.map((option) => ({ label: option, value: option }));
+export const formatOptions: (options: string[]) => selectOption[] = (options) =>
+  options.map((option) => ({ label: option, value: option }));
 
 export const formatDynamicOptions: (options: dynamicOption[]) => selectOption[] = (
   options
