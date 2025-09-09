@@ -1,4 +1,4 @@
-import { Checkbox, Col, Divider, Flex, Tag } from "antd";
+import { Checkbox, Col, Divider, Flex, Image, Tag } from "antd";
 import { FC, PropsWithChildren, useEffect, useState } from "react";
 import styles from "./index.module.scss";
 import { Formik } from "formik";
@@ -23,6 +23,7 @@ import Card from "../../common/card";
 import ProgressButtons from "./progress-buttons";
 import { COLOR_HEX } from "../../constants/generic";
 import { showErrorToast } from "../../utils/common";
+import { iphone17 } from "../../assets";
 
 const RegistrationForInterest: FC<PropsWithChildren> = () => {
   const [step, setStep] = useState(1);
@@ -70,6 +71,9 @@ const RegistrationForInterest: FC<PropsWithChildren> = () => {
     >
       {({ values, setFieldValue, errors, touched, handleSubmit }) => (
         <form className={styles.form}>
+          <section className={styles.imageContainer}>
+            <Image src={iphone17} preview={false} />
+          </section>
           {step === 1 && (
             <Card className={styles.card} title={"Registration of Interest"}>
               <Group cols={2} className={styles.inputGroup}>
@@ -198,8 +202,8 @@ const RegistrationForInterest: FC<PropsWithChildren> = () => {
               )}
               <Divider />
               <h3>
-                Are you interested in the new Apple Watch Series 11 or AirPods
-                Pro 3?
+                Are you interested in the new Apple Watch Series 11, Apple Watch
+                SE 3, Apple Watch Ultra 3, or AirPods Pro 3?
               </h3>
               <Checkbox.Group
                 onChange={(value) => {
@@ -251,11 +255,14 @@ const RegistrationForInterest: FC<PropsWithChildren> = () => {
             </Summary>
           )}
           {step === 3 && (
-            <h3 style={{ textAlign: "center" }}>
-              Thank You for showing your interest. Your order has been received.
-              <br />
-              Our representative will be in contact with you shortly.
-            </h3>
+            <Card title={"Registration Recorded"}>
+              <h3 style={{ textAlign: "center" }}>
+                Thank You for showing your interest. Your order has been
+                received.
+                <br />
+                Our representative will be in contact with you shortly.
+              </h3>
+            </Card>
           )}
         </form>
       )}
