@@ -225,6 +225,7 @@ const RegistrationListing = () => {
         rows={total}
         currentPage={current}
         handlePageChange={handlePageChange}
+        style={{border: '5px solid #EEEEEE', borderRadius: '3px'}}
       />
     </main>
   );

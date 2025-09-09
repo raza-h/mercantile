@@ -9,6 +9,10 @@ export const COLOR_HEX: { [key: string]: string } = {
   "Cosmic Orange": '#FF6F3D',
   "Deep Blue": '#1F3A5B',
   Silver: '#F5F5F7', 
+  "Sky Blue": '#89CFF0', 
+  "Light Gold": '#F1E0B6', 
+  "Cloud White": '#F4F4F4',
+  "Space Black": '#1A1A1A', 
 };
 
 export const statuses: string[] = [

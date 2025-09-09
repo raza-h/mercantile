@@ -39,6 +39,8 @@ export const storage: string[] = ["128 GB", "256 GB", "512 GB", "1 TB"];
 
 export const interestedOptions: string[] = [
   "Apple Watch Series 11",
+  "Apple Watch SE 3",
+  "Apple Watch Ultra 3",
   "AirPods Pro 3",
 ];
 
@@ -71,8 +73,9 @@ export const getDynamicStorageOptions = (model: string) => {
 };
 
 export const getDynamicColorOptions = (model: string) => {
-  const showBase: boolean = [models[0], models[1]].includes(model); // base & air
-  const showPro: boolean = [models[2], models[3]].includes(model); // pro & pro max
+  const showBase: boolean = [models[0]].includes(model);
+  const showAir: boolean = [models[1]].includes(model);
+  const showPro: boolean = [models[2], models[3]].includes(model);
 
   const colors: dynamicOption[] = [
     {
@@ -106,6 +109,22 @@ export const getDynamicColorOptions = (model: string) => {
     {
       label: "Silver",
       show: showPro,
+    },
+    {
+      label: "Sky Blue",
+      show: showAir,
+    },
+    {
+      label: "Light Gold",
+      show: showAir,
+    },
+    {
+      label: "Cloud White",
+      show: showAir,
+    },
+    {
+      label: "Space Black",
+      show: showAir,
     },
   ];
 

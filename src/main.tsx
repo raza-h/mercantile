@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <ConfigProvider theme={{
         token: {
-          colorPrimary: '#7A42FF',
+          colorPrimary: '#FF9913',
         }
       }}>
         <App />

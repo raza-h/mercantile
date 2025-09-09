@@ -2,24 +2,26 @@
 
 .imageContainer
 {
-    background: linear-gradient(to bottom, #0046b5, #f8f4fc);
     height: fit-content;
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 2rem 0;
+    @media only screen and (min-width: 1024px) {
+        width: 30%;
+        margin: 0 auto;
+    }
 }
 
 .form {
-    margin-top: 50px;
     width: 100%;
     color: $primary-color;
     .card {
-        background: linear-gradient(to right, $primary-light 0%, $secondary-color 40%, $secondary-color 90%, $secondary-color 100%);
+        @media only screen and (min-width: 1024px) {
+            background: linear-gradient(to right, $primary-light 0%, $secondary-color 40%, $secondary-color 90%, $secondary-color 100%);
+        }
     }
-    @media only screen and (min-width: 768px) {
-        margin-top: 200px;
-    };
 }
 
 .inputGroup {

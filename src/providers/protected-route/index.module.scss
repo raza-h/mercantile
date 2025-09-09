@@ -1,3 +1,5 @@
+@use '../../styles/antd.theme.scss' as *;
+
 .wrapper {
-    background-image: none !important;
+    background-color: $secondary-color;
 }
