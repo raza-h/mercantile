@@ -38,15 +38,15 @@ export const registrationFormSchema = yup.object().shape({
 export const storage: string[] = ["128 GB", "256 GB", "512 GB", "1 TB"];
 
 export const interestedOptions: string[] = [
-  "Apple Watch Series 10",
-  "AirPods 4",
+  "Apple Watch Series 11",
+  "AirPods Pro 3",
 ];
 
 export const models: string[] = [
-  "iPhone 16",
-  "iPhone 16 Plus",
-  "iPhone 16 Pro",
-  "iPhone 16 Pro Max",
+  "iPhone 17",
+  "iPhone 17 Air",
+  "iPhone 17 Pro",
+  "iPhone 17 Pro Max",
 ];
 
 export const formatOptions: (
@@ -60,32 +60,24 @@ export const formatDynamicOptions: (options: dynamicOption[]) => selectOption[] 
 export const getDynamicStorageOptions = (model: string) => {
   const storage: dynamicOption[] = [
     {
-      label: "128 GB",
+      label: "256 GB",
       show: [models[0], models[1], models[2]].includes(model),
     },
-    { label: "256 GB", show: true },
     { label: "512 GB", show: true },
-    { label: "1 TB", show: [models[2], models[3]].includes(model) },
+    { label: "1 TB", show: true },
+    { label: "2 TB", show: [models[2], models[3]].includes(model) },
   ];
 
   return formatDynamicOptions(storage);
 };
 
 export const getDynamicColorOptions = (model: string) => {
-  const showBase: boolean = [models[0], models[1]].includes(model); 
-  const showPro: boolean = [models[2], models[3]].includes(model); 
+  const showBase: boolean = [models[0], models[1]].includes(model); // base & air
+  const showPro: boolean = [models[2], models[3]].includes(model); // pro & pro max
 
   const colors: dynamicOption[] = [
     {
-      label: "Ultramarine",
-      show: showBase,
-    },
-    {
-      label: "Teal",
-      show: showBase
-    },
-    {
-      label: "Pink",
+      label: "Black",
       show: showBase,
     },
     {
@@ -93,23 +85,27 @@ export const getDynamicColorOptions = (model: string) => {
       show: showBase,
     },
     {
-      label: "Black",
+      label: "Lavender",
       show: showBase,
     },
     {
-      label: "Desert Titanium",
+      label: "Mist Blue",
+      show: showBase,
+    },
+    {
+      label: "Sage",
+      show: showBase,
+    },
+    {
+      label: "Cosmic Orange",
       show: showPro,
     },
     {
-      label: "Natural Titanium",
+      label: "Deep Blue",
       show: showPro,
     },
     {
-      label: "White Titanium",
-      show: showPro,
-    },
-    {
-      label: "Black Titanium",
+      label: "Silver",
       show: showPro,
     },
   ];

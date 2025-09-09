@@ -1,16 +1,15 @@
 export const PAGE_SIZE: number = 4;
 
 export const COLOR_HEX: { [key: string]: string } = {
-    Black: '#4A4F50',
-    White: '#FAFBFB',
-    Pink: '#F3B6DF',
-    Teal: '#B9D8D6',
-    Ultramarine: '#A2B4F9',
-    "Desert Titanium": "#C3AB97",
-    "Natural Titanium": "#C7C2B6",
-    "White Titanium": "#F2F1EF",
-    "Black Titanium": "#4D4D4C",
-}
+  Lavender: '#E6D0FF',
+  Sage: '#B8C8B8', 
+  "Mist Blue": '#A7C8EE',
+  White: '#FFFFFF',
+  Black: '#2D2D2D',
+  "Cosmic Orange": '#FF6F3D',
+  "Deep Blue": '#1F3A5B',
+  Silver: '#F5F5F7', 
+};
 
 export const statuses: string[] = [
   "canceled",

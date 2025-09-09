@@ -6,3 +6,19 @@
   background: $body-background;
   color: $primary-color;
 }
+
+.ant-select-selection-placeholder {
+  color: #999999 !important;
+}
+
+::placeholder {
+  color: #999999 !important;
+}
+
+:-ms-input-placeholder {
+  color: #999999 !important;
+}
+
+::-ms-input-placeholder {
+  color: #999999 !important;
+}
