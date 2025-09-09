@@ -17,12 +17,14 @@ const TopHeader = () => {
           src={mercantileLogo}
           preview={false}
           width={80}
+          loading="lazy"
         />
         <Image
           src={authorizedDistributor}
           color="white"
           preview={false}
           width={80}
+          loading="lazy"
         />
       </Flex>
     </Header>

@@ -5,18 +5,25 @@ import InternalWrapper from "../internal-wrapper";
 import { Button, Flex } from "antd";
 import { showErrorToast } from "../../utils/common";
 import { logout } from "../../apis/auth";
+import styles from './index.module.scss';
 
-const ProtectedRoute: FC<{ session?: boolean; setSession?: Dispatch<SetStateAction<boolean>> }> = ({
-  session = true,
-  setSession = () => {},
-}) => {
+const ProtectedRoute: FC<{
+  session?: boolean;
+  setSession?: Dispatch<SetStateAction<boolean>>;
+}> = ({ session = true, setSession = () => {} }) => {
   const [loading, setLoading] = useState(false);
 
   return session ? (
     <>
-      <InternalWrapper>
+      <InternalWrapper className={styles?.wrapper}>
         <Flex
-          style={{ height: 0, position: "relative", padding: "0.25rem 2rem" }}
+          style={{
+            height: 0,
+            position: "relative",
+            padding: "0.25rem 2rem",
+            width: "100%",
+            top: "10px",
+          }}
         >
           <Button
             danger

@@ -1,6 +1,5 @@
-import { Checkbox, Col, Divider, Flex, Image, Tag } from "antd";
+import { Checkbox, Col, Divider, Flex, Tag } from "antd";
 import { FC, PropsWithChildren, useEffect, useState } from "react";
-import { iphone16 } from "../../assets";
 import styles from "./index.module.scss";
 import { Formik } from "formik";
 import {
@@ -71,11 +70,8 @@ const RegistrationForInterest: FC<PropsWithChildren> = () => {
     >
       {({ values, setFieldValue, errors, touched, handleSubmit }) => (
         <form className={styles.form}>
-          <section className={styles.imageContainer}>
-            <Image src={iphone16} preview={false} width={600} />
-          </section>
           {step === 1 && (
-            <Card title={"Registration of Interest"}>
+            <Card className={styles.card} title={"Registration of Interest"}>
               <Group cols={2} className={styles.inputGroup}>
                 <Input
                   label="Name"
@@ -121,7 +117,7 @@ const RegistrationForInterest: FC<PropsWithChildren> = () => {
                 />
               </Group>
               <Divider />
-              <h3>iPhone 16 Preferences</h3>
+              <h3>iPhone 17 Preferences</h3>
               <Group cols={2} className={styles.inputGroup}>
                 <Select
                   label="Model"
@@ -165,7 +161,7 @@ const RegistrationForInterest: FC<PropsWithChildren> = () => {
                             styles.customTag,
                             checked ? styles.selectedTag : ""
                           )}
-                          style={{ background: "white" }}
+                          style={{ background: "transparent" }}
                           checked={checked}
                           onChange={() => {
                             setFieldValue("color", value);
@@ -202,8 +198,8 @@ const RegistrationForInterest: FC<PropsWithChildren> = () => {
               )}
               <Divider />
               <h3>
-                Are you interested in the new Apple Watch Series 10 or AirPods
-                4?
+                Are you interested in the new Apple Watch Series 11 or AirPods
+                Pro 3?
               </h3>
               <Checkbox.Group
                 onChange={(value) => {

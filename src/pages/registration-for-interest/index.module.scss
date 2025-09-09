@@ -11,8 +11,15 @@
 }
 
 .form {
+    margin-top: 50px;
     width: 100%;
     color: $primary-color;
+    .card {
+        background: linear-gradient(to right, $primary-light 0%, $secondary-color 40%, $secondary-color 90%, $secondary-color 100%);
+    }
+    @media only screen and (min-width: 768px) {
+        margin-top: 200px;
+    };
 }
 
 .inputGroup {
