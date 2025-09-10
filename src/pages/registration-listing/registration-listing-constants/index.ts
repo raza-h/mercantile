@@ -6,6 +6,7 @@ export const columns: column[] = [
     title: strings.user,
     dataIndex: strings.user,
     key: strings.user,
+    width: 250,
   },
   {
     title: strings.status,

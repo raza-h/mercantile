@@ -27,6 +27,8 @@ const RegistrationListing = () => {
   const navigate = useNavigate();
   const current = Number(new URLSearchParams(location.search).get("page")) || 1;
 
+  console.log(registrations);
+
   const handlePageChange = (page: number) => {
     navigate({ search: `?page=${page}` });
   };
@@ -143,6 +145,7 @@ const RegistrationListing = () => {
           <small className={styles.bold}>{color}</small>
         </article>
       ),
+      [strings.pta_status]: pta_status,
       [strings.interests]: <p>{interests || "None"}</p>,
       [strings.actions]: (
         <Flex

@@ -94,7 +94,7 @@ export const getRegistrations = async (page: number = 1) => {
       .from(table)
       .select("*")
       .range(from, to)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: true });
     if (error) throw error;
     return data;
   } catch (error: unknown) {
