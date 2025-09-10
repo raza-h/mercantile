@@ -2,8 +2,6 @@ name: Build and Deploy (Stage)
 
 on:
   push:
-    branches:
-      - '**'
     tags:
       - 'stage-*'
 
