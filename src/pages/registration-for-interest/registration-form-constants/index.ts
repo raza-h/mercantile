@@ -63,7 +63,7 @@ export const getDynamicStorageOptions = (model: string) => {
   const storage: dynamicOption[] = [
     {
       label: "256 GB",
-      show: [models[0], models[1], models[2]].includes(model),
+      show: [models[0], models[1], models[2], models[3]].includes(model),
     },
     { label: "512 GB", show: true },
     { label: "1 TB", show: true },
