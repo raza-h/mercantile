@@ -20,6 +20,7 @@ const Summary: FC<{
     storage = "",
     color = "",
     interests = [],
+    pta_status = 'PTA',
   } = values;
 
   return (
@@ -41,7 +42,7 @@ const Summary: FC<{
           <h3>Specifications</h3>
           <p className={styles.break} />
           <h4>Model</h4>
-          <p>{model}</p>
+          <p>{model} {`(${pta_status})`}</p>
           <h4>Storage</h4>
           <p>{storage}</p>
           <h4>Color</h4>

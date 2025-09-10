@@ -12,6 +12,7 @@ export const registrationFormInitialValues: Omit<Registration, 'interests' | 'st
   storage: undefined,
   color: undefined,
   interests: [],
+  pta_status: 'PTA',
 };
 
 export const registrationFormSchema = yup.object().shape({
@@ -51,8 +52,14 @@ export const models: string[] = [
   "iPhone 17 Pro Max",
 ];
 
-export const formatOptions: (options: string[]) => selectOption[] = (options) =>
-  options.map((option) => ({ label: option, value: option }));
+export const PTA_STATUSES = [
+  'PTA',
+  'Non-PTA',
+]
+
+export const formatOptions: (
+  options: string[]
+) => selectOption[] = (options) => options.map((option) => ({ label: option, value: option }));
 
 export const formatDynamicOptions: (options: dynamicOption[]) => selectOption[] = (
   options

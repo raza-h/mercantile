@@ -5,3 +5,4 @@ export {default as Select} from './select';
 export {default as Table} from './table';
 export {default as Input} from './input';
 export {default as ErrorMessage} from './error-message';
+export {default as Radio} from './radio-group';

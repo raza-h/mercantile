@@ -6,4 +6,5 @@ export default {
     interests: 'Interests',
     status: 'Status',
     actions: 'Actions',
+    pta_status: 'PTA Status',
 }
