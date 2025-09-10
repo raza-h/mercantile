@@ -8,6 +8,7 @@ import {
   getDynamicStorageOptions,
   interestedOptions,
   models,
+  PTA_STATUSES,
   registrationFormInitialValues,
   registrationFormSchema,
 } from "./registration-form-constants";
@@ -24,6 +25,7 @@ import ProgressButtons from "./progress-buttons";
 import { COLOR_HEX } from "../../constants/generic";
 import { showErrorToast } from "../../utils/common";
 import { iphone17 } from "../../assets";
+import Radio from "../../common/radio-group";
 
 const RegistrationForInterest: FC<PropsWithChildren> = () => {
   const [step, setStep] = useState(1);
@@ -192,6 +194,14 @@ const RegistrationForInterest: FC<PropsWithChildren> = () => {
                     }
                   )}
               </Flex>
+              <Radio
+                value={values?.pta_status}
+                options={PTA_STATUSES}
+                onChange={(e) => {
+                  setFieldValue("pta_status", e?.target?.value);
+                }}
+                className={styles?.radio}
+              />
               {!!values?.model && (
                 <ErrorMessage
                   name="color"

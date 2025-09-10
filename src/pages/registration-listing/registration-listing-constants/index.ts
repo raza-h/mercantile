@@ -23,6 +23,11 @@ export const columns: column[] = [
     key: strings.variant,
   },
   {
+    title: strings.pta_status,
+    dataIndex: strings.pta_status,
+    key: strings.pta_status,
+  },
+  {
     title: strings.interests,
     dataIndex: strings.interests,
     key: strings.interests,

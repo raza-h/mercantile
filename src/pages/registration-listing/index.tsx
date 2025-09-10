@@ -80,6 +80,7 @@ const RegistrationListing = () => {
       id,
       status,
       updated_at,
+      pta_status,
     }) => ({
       key: id,
       [strings.user]: (
@@ -162,6 +163,7 @@ const RegistrationListing = () => {
               phone,
               id,
               status,
+              pta_status,
             })
           }
         >
