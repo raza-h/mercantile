@@ -57,12 +57,14 @@ const RegistrationForInterest: FC<PropsWithChildren> = () => {
         else {
           try {
             setLoading(true);
-            await registerForInterest({
+            const res = await registerForInterest({
               ...values,
               status: "pending",
               interests: values.interests.join(", "),
             });
-            setStep(3);
+            if (!res?.error) {
+              setStep(3);
+            }
           } catch (error: unknown) {
             showErrorToast({ action: "registering your interest", error });
           } finally {

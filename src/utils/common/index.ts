@@ -1,5 +1,15 @@
 import { notification } from "antd";
 
+function hasStringMessage(obj: unknown): obj is { message: string } {
+  if (obj instanceof Error) return true;
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    "message" in obj &&
+    typeof obj.message! === "string"
+  );
+};
+
 export const showErrorToast: (config: {
   action: string;
   error: unknown;
@@ -18,7 +28,7 @@ export const showErrorToast: (config: {
 }) => {
   notification.error({
     message: `Error occurred during ${action}`,
-    description: error instanceof Error ? error.message : '',
+    description: hasStringMessage(error) ? error.message : '',
     placement: placement,
     duration: 3,
   });

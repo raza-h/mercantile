@@ -69,6 +69,7 @@ export const registerForInterest = async (payload: Registration) => {
         "registering your interest. Please verify the details and try again.",
       error,
     });
+    return { error };
   }
 };
 
