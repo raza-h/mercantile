@@ -48,6 +48,9 @@ export const registerForInterest = async (payload: Registration) => {
   try {
     const supabase = await getSupabaseClient();
     const res = await supabase.from(table).insert(payload);
+    if (res?.error) {
+      throw res?.error;
+    }
     await sendConfirmationEmailToAdmin({
       name: payload?.name,
       email: payload?.email,
