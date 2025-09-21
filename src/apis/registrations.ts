@@ -51,15 +51,17 @@ export const registerForInterest = async (payload: Registration) => {
     if (res?.error) {
       throw res?.error;
     }
-    await sendConfirmationEmailToAdmin({
-      name: payload?.name,
-      email: payload?.email,
-      phone: payload?.phone,
-    });
-    await sendConfirmationEmailToUser({
-      name: payload?.name,
-      email: payload?.email,
-    });
+    await Promise.all([
+      sendConfirmationEmailToAdmin({
+        name: payload?.name,
+        email: payload?.email,
+        phone: payload?.phone,
+      }),
+      sendConfirmationEmailToUser({
+        name: payload?.name,
+        email: payload?.email,
+      }),
+    ]);
     return res;
   } catch (error: unknown) {
     showErrorToast({
