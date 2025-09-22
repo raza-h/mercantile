@@ -10,7 +10,7 @@ const TopHeader = () => {
         src={"https://www.epanorama.pk/images/thumbs/0000110_Header-Logo.png"}
         preview={false}
         width={200}
-        fetchPriority={'high'}
+        loading="eager"
       />
       <Flex gap={8}>
         <Image
